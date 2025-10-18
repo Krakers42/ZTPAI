@@ -1,7 +1,7 @@
 # ZTPAI
 Projekt Bike Base używający frameworków.
 
-### 🧩 Framework główny: **React.js**
+### Framework główny: **React.js**
 React został wybrany ze względu na:
 - dużą popularność, 
 - budowę aplikacji złożoną z komponentów,  
