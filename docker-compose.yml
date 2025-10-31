@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./backend
+    container_name: bikebase-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./backend/prisma/dev.db:/app/prisma/dev.db
+    environment:
+      - DATABASE_URL=file:./prisma/dev.db
+      - NODE_ENV=development
+    command: npm run dev
+
+  frontend:
+    build: ./frontend
+    container_name: bikebase-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://host.docker.internal:5000
+    command: npm run dev
