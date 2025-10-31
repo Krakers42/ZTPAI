@@ -7,11 +7,11 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-      - ./backend/prisma/dev.db:/app/prisma/dev.db
+      - ./backend/prisma:/app/prisma
     environment:
       - DATABASE_URL=file:./prisma/dev.db
       - NODE_ENV=development
-    command: npm run dev
+    command: npx nodemon server.js
 
   frontend:
     build: ./frontend
@@ -22,5 +22,5 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://host.docker.internal:5000
+      - VITE_API_URL=http://localhost:5000
     command: npm run dev -- --host

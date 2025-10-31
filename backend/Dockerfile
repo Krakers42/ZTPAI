@@ -11,4 +11,4 @@ RUN npx prisma generate || true
 
 EXPOSE 5000
 
-CMD ["npm", "run", "dev"]
+CMD ["npx", "nodemon", "server.js"]
