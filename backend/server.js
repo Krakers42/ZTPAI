@@ -20,19 +20,26 @@ app.get("/api/bikes", (req, res) => {
   res.json(bikes);
 });
 
-app.get("/api/bikes/:id", (req, res) => {
-  const id = Number(req.params.id);
-
+app.get("/api/bikes/:id", async (req, res) => {
+  const { id } = req.params;
   if (isNaN(id)) {
-    return res.status(400).json({ error: "Nieprawidłowe ID roweru" });
+    return res.status(400).json({ error: "Invalid bike ID" });
   }
 
-  const bike = bikes.find(b => b.id === id);
+  const bike = await prisma.bike.findUnique({ where: { id: Number(id) } });
   if (!bike) {
-    return res.status(404).json({ error: "Rower nie znaleziony" });
+    return res.status(404).json({ error: "Bike not found" });
   }
 
   res.json(bike);
+});
+
+app.use((req, res) => {
+  res.status(404).json({ error: "Not Found" });
+});
+
+app.use((req, res) => {
+  res.status(400).json({ error: "Invalid ID" });
 });
 
 app.listen(PORT, () => {
