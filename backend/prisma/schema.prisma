@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserDetails {
+  id_user_details Int      @id @default(autoincrement())
+  name            String
+  surname         String
+  role            String
+  users           User[]
+}
+
+model User {
+  id_user         Int          @id @default(autoincrement())
+  email           String       @unique
+  password        String
+  id_user_details Int
+  user_details    UserDetails? @relation(fields: [id_user_details], references: [id_user_details])
+  bike_cards      BikeCard[]
+  gear_parts      GearPart[]
+  trips           Trip[]
+  photos          Photo[]
+}
+
+model BikeCard {
+  id_bike_card Int    @id @default(autoincrement())
+  id_user      Int
+  name         String
+  description  String
+  image_type   String
+  photo_path   String? 
+  user         User    @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
+}
+
+model GearPart {
+  id_gear_part Int    @id @default(autoincrement())
+  id_user      Int
+  purchase_date DateTime?
+  name         String
+  value        Int?
+  comment      String?
+  user         User @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
+}
+
+model Trip {
+  id_trip     Int    @id @default(autoincrement())
+  id_user     Int
+  date        DateTime
+  time        String?
+  distance    Int
+  elevation   Int?
+  description String?
+  user        User @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
+}
+
+model Photo {
+  id_photo   Int    @id @default(autoincrement())
+  id_user    Int?
+  path       String 
+  user       User?   @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
+}

@@ -11,7 +11,7 @@ services:
     environment:
       - DATABASE_URL=file:./prisma/dev.db
       - NODE_ENV=development
-    command: npx nodemon server.js
+    command: npx nodemon --legacy-watch server.js
 
   frontend:
     build: ./frontend
@@ -24,3 +24,20 @@ services:
     environment:
       - VITE_API_URL=http://localhost:5000
     command: npm run dev -- --host
+
+  db:
+    image: postgres:17
+    container_name: bikebase-db
+    restart: always
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: bikebase
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
+

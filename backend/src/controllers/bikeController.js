@@ -17,7 +17,7 @@ export const getBikeById = (req, res) => {
   const bike = bikes.find(b => b.id === Number(id));
 
   if (!bike) {
-    return res.status(404).json({ error: "Bike not found" });
+    return res.status(404).json({ error: "Bike not found!" });
   }
 
   res.json(bike);
