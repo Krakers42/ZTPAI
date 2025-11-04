@@ -1,0 +1,160 @@
+* {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-size: 18px;
+    font-style: normal;
+    --primary-color: black;
+}
+
+.flex-column-center-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-row-center-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    padding: 1em;
+    border-radius: 1em;
+}
+
+@media (max-width: 600px) {
+    .container {
+        flex-direction: column; /*logo above the form on mobile devices*/
+    }
+}
+
+.logo {
+    position: relative;
+    display: inline-block;
+    width: 220px;
+    height: 300px;
+    background-size: contain;
+}
+
+@keyframes scaleAnimation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1); 
+    }
+}
+
+.logo:hover {
+    animation: scaleAnimation 2s infinite ease-in-out; 
+}
+
+.content, .login-form, .register-form, .reset-password-form, .reset_password_page {
+    gap: 1em;
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: normal;
+    margin: 0;
+    word-break: break-word;
+    text-align: center;
+}
+
+h3 {
+    font-size: 24px;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgb(120,197,244);
+    background: linear-gradient(130deg, rgba(120,197,244,1) 25%, rgba(5,66,103,1) 75%);
+}
+
+.whole-input {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+    padding: 6px 8px;
+    border: 2px solid black;
+    box-shadow:
+      2px 2px 5px rgb(0 0 0 / 40%), /* drop shadow */
+      inset 1px 1px 3px rgb(0 0 0 / 40%); /* inner shadow */
+    width: 320px
+ 
+}
+
+.whole-input > .icon {
+    font-size: 28px;
+    margin-right: 8px;
+}
+
+.whole-input > input {
+    border: none;
+    outline: none;
+    flex: 1;
+    background: #00000000;
+    letter-spacing: 2px;
+}
+
+input::placeholder {
+    color: rgb(131 0 0 / 25%);
+}
+
+button {
+    width: 320px;
+    height: 55px;
+    background: #83C5EE;
+    border-radius: 10px;
+    border: 2px solid black;
+    letter-spacing: 3px;
+    color: white;
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 2px 2px 5px rgb(0 0 0 / 40%); /* drop shadow */
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+}
+
+.messages {
+    color: #960101;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
