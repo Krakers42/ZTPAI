@@ -8,9 +8,8 @@ services:
       - ./backend:/app
       - /app/node_modules
       - ./backend/prisma:/app/prisma
-    environment:
-      - DATABASE_URL=file:./prisma/dev.db
-      - NODE_ENV=development
+    env_file:
+      - ./backend/.env.docker
     command: npx nodemon --legacy-watch server.js
 
   frontend:

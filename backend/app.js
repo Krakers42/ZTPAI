@@ -19,10 +19,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 
-app.get("/api/hello", (req, res) => {
-  res.json({ message: "Backend is working!" });
-});
-
 app.use("/api/bikes", authMiddleware, bikeRoutes); //authMiddleware - bikes are only accesible for logged users
 
 app.use(notFoundHandler);
