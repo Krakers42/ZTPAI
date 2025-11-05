@@ -35,6 +35,18 @@ export default function Register() {
   const submit = async (e) => {
     e.preventDefault();
 
+    if (
+      !form.name ||
+      !form.surname ||
+      !form.email ||
+      !form.password ||
+      !form.confirmPassword ||
+      !form.role
+    ) {
+      setMsg("Please fill all required fields");
+      return;
+    }
+
     if (form.password !== form.confirmPassword) {
       setMsg("Passwords do not match");
       return;
@@ -79,7 +91,6 @@ export default function Register() {
             gap: 2,
           }}
         >
-          {/* LOGO */}
           <img
             src="/public/images/logo.svg"
             alt="Logo"

@@ -58,44 +58,67 @@ export default function Login() {
             {msg}
           </Typography>
 
-          <TextField
-            fullWidth
-            label="Email"
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            type="password"
-            variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            size="large"
-            onClick={submit}
-            sx={{
-              mt: 1,
-              bgcolor: "primary.main",
-              "&:hover": { bgcolor: "primary.dark" },
+          <form
+            onSubmit={submit}
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
             }}
           >
-            CONTINUE
-          </Button>
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              variant="outlined"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <Button
+              fullWidth
+              variant="contained"
+              size="large"
+              type="submit"
+              sx={{
+                mt: 1,
+                bgcolor: "primary.main",
+                "&:hover": { bgcolor: "primary.dark" },
+              }}
+            >
+              CONTINUE
+            </Button>
+          </form>
 
           <Box sx={{ textAlign: "center", mt: 3 }}>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              <Link to="/forgot-password" style={{ color: "#0566a6", textDecoration: "none" }}>
+              <Link
+                to="/forgot-password"
+                style={{ color: "#0566a6", textDecoration: "none" }}
+              >
                 Forgot password?
               </Link>
             </Typography>
 
             <Typography variant="body2">
-              <Link to="/register" style={{ color: "#0566a6", textDecoration: "none", fontWeight: 500 }}>
+              <Link
+                to="/register"
+                style={{
+                  color: "#0566a6",
+                  textDecoration: "none",
+                  fontWeight: 500,
+                }}
+              >
                 Register
               </Link>
             </Typography>
