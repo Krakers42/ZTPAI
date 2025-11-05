@@ -14,7 +14,6 @@ const ForgotPassword = () => {
     }
 
     try {
-      // jeśli masz backend PHP, możesz to potem podpiąć pod API
       const response = await fetch("/reset_password_handler.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },

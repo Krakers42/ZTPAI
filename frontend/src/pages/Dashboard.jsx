@@ -1,8 +1,9 @@
 import React from "react";
+import DashboardLayout from "./PageLayout";
 
 const Dashboard = () => {
   return (
-    <main style={styles.main}>
+    <DashboardLayout>
       <h1 style={styles.header}>DASHBOARD</h1>
 
       <section style={styles.section}>
@@ -31,19 +32,11 @@ const Dashboard = () => {
           <p>230 m</p>
         </div>
       </section>
-    </main>
+    </DashboardLayout>
   );
 };
 
 const styles = {
-  main: {
-    margin: 0,
-    display: "grid",
-    height: "100vh",
-    overflowY: "auto",
-    background: "rgba(184, 225, 250, 0.5)",
-    padding: "40px",
-  },
   header: {
     textAlign: "center",
     fontFamily: "Roboto, sans-serif",
