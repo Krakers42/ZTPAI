@@ -19,7 +19,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 
-app.use("/api/bikes", authMiddleware, bikeRoutes); //authMiddleware - bikes are only accesible for logged users
+app.use("/api/uploads", express.static("uploads"));
+app.use("/api/bikes", bikeRoutes); //authMiddleware - bikes are only accesible for logged users
 
 app.use(notFoundHandler);
 app.use(errorHandler);

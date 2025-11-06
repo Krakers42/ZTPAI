@@ -1,24 +1,53 @@
-const bikes = [
-  { id: 1, brand: "Trek", model: "Marlin 7", year: 2022 },
-  { id: 2, brand: "Specialized", model: "Rockhopper", year: 2023 },
-];
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-export const getAllBikes = (req, res) => {
-  res.json(bikes);
+export const getBikes = async (req, res) => {
+  try {
+    const bikes = await prisma.bikeCard.findMany({
+      where: { id_user: req.user.id_user },
+      orderBy: { id_bike_card: "desc" },
+    });
+    res.json(bikes);
+  } catch (err) {
+    console.error("Error in getBikes:", err);
+    res.status(500).json({ error: err.message });
+  }
 };
 
-export const getBikeById = (req, res) => {
-  const { id } = req.params;
+export const addBike = async (req, res) => {
+  try {
+    const { name, description } = req.body;
+    const image = req.file ? req.file.filename : null;
 
-  if (isNaN(id)) {
-    return res.status(400).json({ error: "Invalid bike ID" });
+    const bike = await prisma.bikeCard.create({
+      data: {
+        id_user: req.user.id_user,
+        name,
+        description,
+        image_type: image ? "jpg" : "none",
+        photo_path: image,
+      },
+    });
+
+    res.json(bike);
+  } catch (err) {
+    console.error("Error in addBike:", err);
+    res.status(500).json({ error: err.message });
   }
+};
 
-  const bike = bikes.find(b => b.id === Number(id));
-
-  if (!bike) {
-    return res.status(404).json({ error: "Bike not found!" });
+export const deleteBike = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await prisma.bikeCard.delete({
+      where: {
+        id_bike_card: parseInt(id),
+        id_user: req.user.id_user,
+      },
+    });
+    res.json({ message: "Bike deleted" });
+  } catch (err) {
+    console.error("Error in deleteBike:", err);
+    res.status(500).json({ error: err.message });
   }
-
-  res.json(bike);
 };
