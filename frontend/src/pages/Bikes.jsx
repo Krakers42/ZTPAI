@@ -24,8 +24,8 @@ export default function Bikes() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this bike?")) {
-      await axios.delete(`${import.meta.env.VITE_API_URL}api/bikes/${id}`);
-      setBikes(bikes.filter((b) => b.id !== id));
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/bikes/${id}`);
+      setBikes(bikes.filter((b) => b.id_bike_card !== id));
     }
   };
 
@@ -40,25 +40,25 @@ export default function Bikes() {
         <Grid container spacing={3}>
           {bikes.length ? (
             bikes.map((bike) => (
-              <Grid item xs={12} md={6} lg={4} key={bike.id}>
+              <Grid item xs={12} md={6} lg={4} key={bike.id_bike_card}>
                 <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
-                  {bike.image && (
+                  {bike.photo_path && (
                     <CardMedia
                       component="img"
                       height="200"
-                      image={`${import.meta.env.VITE_API_URL}/uploads/${bike.image}`}
-                      alt={bike.title}
+                      image={`${import.meta.env.VITE_API_URL}/uploads/${bike.photo_path}`}
+                      alt={bike.name}
                     />
                   )}
                   <CardContent>
-                    <Typography variant="h6">{bike.title}</Typography>
+                    <Typography variant="h6">{bike.name}</Typography>
                     <Typography variant="body2" color="text.secondary">
                       {bike.description}
                     </Typography>
                   </CardContent>
                   <IconButton
                     color="error"
-                    onClick={() => handleDelete(bike.id)}
+                    onClick={() => handleDelete(bike.id_bike_card)}
                     sx={{ alignSelf: "flex-end", margin: 1 }}
                   >
                     <DeleteIcon />

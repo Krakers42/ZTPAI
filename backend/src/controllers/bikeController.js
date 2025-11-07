@@ -39,7 +39,7 @@ export const addBike = async (req, res) => {
 export const deleteBike = async (req, res) => {
   try {
     const { id } = req.params;
-    await prisma.bikeCard.delete({
+    await prisma.bikeCard.deleteMany({
       where: {
         id_bike_card: parseInt(id),
         id_user: req.user.id_user,
