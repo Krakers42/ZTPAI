@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/ForgotPassword.jsx";
 import Sidebar from "./pages/Sidebar.jsx";
 import PageLayout from "./pages/PageLayout.jsx";
 import GearParts from "./pages/GearParts.jsx";
+import Trips from "./pages/Trips.jsx";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path="/sidebar" element={<Sidebar />} />
       <Route path="/page-layout" element={<PageLayout />} />
       <Route path="/gear-parts" element={<GearParts />} />
+      <Route path="/trips" element={<Trips />} />
     </Routes>
   );
 }
