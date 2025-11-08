@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 
 import authRoutes from './src/routes/authenticationRoutes.js';
 import bikeRoutes from "./src/routes/bikeRoutes.js";
+import gearPartsRoutes from './src/routes/gearPartsRoutes.js';
 
 import { authMiddleware } from './src/middlewares/authenticationMiddleware.js';
 
@@ -30,8 +31,8 @@ const __dirname = path.dirname(__filename);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-
 app.use("/api/bikes", bikeRoutes); //authMiddleware - bikes are only accesible for logged users
+app.use("/api/gear_parts", gearPartsRoutes); 
 
 app.use(notFoundHandler);
 app.use(errorHandler);

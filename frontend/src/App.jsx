@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import Sidebar from "./pages/Sidebar.jsx";
 import PageLayout from "./pages/PageLayout.jsx";
+import GearParts from "./pages/GearParts.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/sidebar" element={<Sidebar />} />
       <Route path="/page-layout" element={<PageLayout />} />
+      <Route path="/gear-parts" element={<GearParts />} />
     </Routes>
   );
 }

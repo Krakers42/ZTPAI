@@ -42,7 +42,7 @@ export default function Sidebar() {
   const menuItems = [
     { text: "Dashboard", icon: <DashboardIcon />, to: "/dashboard" },
     { text: "Bikes", icon: <BikeIcon />, to: "/bikes" },
-    { text: "Gear & Parts", icon: <GearIcon />, to: "/gear_parts" },
+    { text: "Gear & Parts", icon: <GearIcon />, to: "/gear-parts" },
     { text: "Photos", icon: <PhotoIcon />, to: "/photos" },
     { text: "Trips", icon: <RouteIcon />, to: "/trips" },
     { text: "Account", icon: <AccountIcon />, to: "/account" },
