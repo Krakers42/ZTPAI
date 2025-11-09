@@ -10,6 +10,7 @@ import PageLayout from "./pages/PageLayout.jsx";
 import GearParts from "./pages/GearParts.jsx";
 import Trips from "./pages/Trips.jsx";
 import Photos from "./pages/Photos.jsx";
+import Account from "./pages/Account.jsx";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
       <Route path="/gear-parts" element={<GearParts />} />
       <Route path="/trips" element={<Trips />} />
       <Route path="/photos" element={<Photos />} />
+      <Route path="/account" element={<Account />} />
     </Routes>
   );
 }
