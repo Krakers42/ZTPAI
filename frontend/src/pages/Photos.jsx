@@ -72,7 +72,10 @@ export default function Photos() {
                   )}
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                      Uploaded on: {new Date(photo.created_at).toLocaleDateString()}
+                      Uploaded on:{" "}
+                      {photo.created_at
+                        ? new Date(photo.created_at).toLocaleDateString()
+                        : "Unknown date"}
                     </Typography>
                   </CardContent>
                   <IconButton
