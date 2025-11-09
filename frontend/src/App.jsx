@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Bikes from "./pages/Bikes.jsx";
 import BikeDetail from "./pages/AddBike.jsx";
 import Login from "./pages/Login.jsx";
@@ -13,6 +14,26 @@ import Photos from "./pages/Photos.jsx";
 import Account from "./pages/Account.jsx";
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const titles = {
+      "/": "Login | BikeBase",
+      "/login": "Login | BikeBase",
+      "/register": "Register | BikeBase",
+      "/dashboard": "Dashboard | BikeBase",
+      "/bikes": "Bikes | BikeBase",
+      "/add-bike": "Add bike | BikeBase",
+      "/trips": "Trips | BikeBase",
+      "/photos": "Photos | BikeBase",
+      "/account": "Account | BikeBase",
+      "/gear-parts": "Gear&parts | BikeBase",
+      "/forgot-password": "Password recovery | BikeBase",
+    };
+
+    document.title = titles[location.pathname] || "BikeBase";
+  }, [location.pathname]);
+
   return (
     <Routes>
       <Route index element={<Login />} />
