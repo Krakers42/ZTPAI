@@ -60,7 +60,8 @@ model Trip {
 
 model Photo {
   id_photo   Int    @id @default(autoincrement())
-  id_user    Int?
-  path       String 
-  user       User?   @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
+  id_user    Int
+  path       String
+  user       User   @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
+  created_at DateTime @default(now())
 }

@@ -9,6 +9,7 @@ import Sidebar from "./pages/Sidebar.jsx";
 import PageLayout from "./pages/PageLayout.jsx";
 import GearParts from "./pages/GearParts.jsx";
 import Trips from "./pages/Trips.jsx";
+import Photos from "./pages/Photos.jsx";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Route path="/page-layout" element={<PageLayout />} />
       <Route path="/gear-parts" element={<GearParts />} />
       <Route path="/trips" element={<Trips />} />
+      <Route path="/photos" element={<Photos />} />
     </Routes>
   );
 }
