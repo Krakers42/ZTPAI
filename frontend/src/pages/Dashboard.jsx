@@ -1,67 +1,98 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import {
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CircularProgress,
+  Box,
+} from "@mui/material";
 import DashboardLayout from "./PageLayout";
+import axios from "axios";
 
-const Dashboard = () => {
+export default function Dashboard() {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/dashboard`, { withCredentials: true })
+      .then((res) => setStats(res.data))
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading)
+    return (
+      <DashboardLayout>
+        <Box display="flex" justifyContent="center" mt={10}>
+          <CircularProgress />
+        </Box>
+      </DashboardLayout>
+    );
+
+  if (!stats)
+    return (
+      <DashboardLayout>
+        <Typography align="center" mt={5}>
+          Error loading data.
+        </Typography>
+      </DashboardLayout>
+    );
+
+  const cards = [
+    { label: "Longest ride", value: `${stats.longestRide} km` },
+    { label: "Trips", value: stats.tripCount },
+    { label: "Distance", value: `${stats.totalDistance} km` },
+    { label: "Photos", value: stats.photoCount },
+    { label: "Biggest elevation", value: `${stats.maxElevation} m` },
+  ];
+
   return (
     <DashboardLayout>
-      <h1 style={styles.header}>DASHBOARD</h1>
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{ mb: 5, fontFamily: "Roboto, sans-serif" }}
+      >
+        DASHBOARD
+      </Typography>
 
-      <section style={styles.section}>
-        <div style={styles.card}>
-          <h3>Longest ride:</h3>
-          <p>120 km</p>
-        </div>
-
-        <div style={styles.card}>
-          <h3>Trips:</h3>
-          <p>25</p>
-        </div>
-
-        <div style={styles.card}>
-          <h3>Distance:</h3>
-          <p>540 km</p>
-        </div>
-
-        <div style={styles.card}>
-          <h3>Photos:</h3>
-          <p>18</p>
-        </div>
-
-        <div style={styles.card}>
-          <h3>Biggest elevation:</h3>
-          <p>230 m</p>
-        </div>
-      </section>
+      <Grid
+        container
+        spacing={3}
+        justifyContent="center"
+        sx={{ px: 3, pb: 5 }}
+      >
+        {cards.map((card) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={card.label}>
+            <Card
+              sx={{
+                borderRadius: 3,
+                textAlign: "center",
+                height: 250,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                boxShadow: 3,
+                backgroundColor: "white",
+              }}
+            >
+              <CardContent>
+                <Typography variant="h6">{card.label}:</Typography>
+                <Typography
+                  variant="h4"
+                  fontWeight="bold"
+                  sx={{ mt: 1 }}
+                >
+                  {card.value}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </DashboardLayout>
   );
-};
-
-const styles = {
-  header: {
-    textAlign: "center",
-    fontFamily: "Roboto, sans-serif",
-    fontSize: "36px",
-  },
-  section: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-    gap: "30px",
-    justifyItems: "center",
-    paddingBottom: "10px",
-  },
-  card: {
-    backgroundColor: "white",
-    padding: "15px",
-    borderRadius: "20px",
-    textAlign: "center",
-    width: "300px",
-    height: "300px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-  },
-};
-
-export default Dashboard;
+}

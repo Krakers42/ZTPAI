@@ -8,6 +8,7 @@ import gearPartsRoutes from './src/routes/gearPartsRoutes.js';
 import tripRoutes from './src/routes/tripRoutes.js'
 import photoRoutes from "./src/routes/photoRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
+import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 
 import { authMiddleware } from './src/middlewares/authenticationMiddleware.js';
 
@@ -39,6 +40,7 @@ app.use("/api/gear_parts", gearPartsRoutes);
 app.use("/api/trips", tripRoutes);
 app.use("/api/photos", photoRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
