@@ -21,6 +21,7 @@ import {
   Route as RouteIcon,
   AccountCircle as AccountIcon,
   Logout as LogoutIcon,
+  Settings as SettingsIcon
 } from "@mui/icons-material";
 
 export default function Sidebar() {
@@ -46,6 +47,7 @@ export default function Sidebar() {
     { text: "Photos", icon: <PhotoIcon />, to: "/photos" },
     { text: "Trips", icon: <RouteIcon />, to: "/trips" },
     { text: "Account", icon: <AccountIcon />, to: "/account" },
+    { text: "Settings", icon: <SettingsIcon />, to: "/settings" },
   ];
 
   return (

@@ -12,6 +12,7 @@ import GearParts from "./pages/GearParts.jsx";
 import Trips from "./pages/Trips.jsx";
 import Photos from "./pages/Photos.jsx";
 import Account from "./pages/Account.jsx";
+import Settings from "./pages/Settings.jsx";
 
 function App() {
   const location = useLocation();
@@ -29,6 +30,7 @@ function App() {
       "/account": "Account | BikeBase",
       "/gear-parts": "Gear&parts | BikeBase",
       "/forgot-password": "Password recovery | BikeBase",
+      "/settings": "Settings | BikeBase",
     };
 
     document.title = titles[location.pathname] || "BikeBase";
@@ -50,6 +52,7 @@ function App() {
       <Route path="/trips" element={<Trips />} />
       <Route path="/photos" element={<Photos />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/settings" element={<Settings />} />
     </Routes>
   );
 }
