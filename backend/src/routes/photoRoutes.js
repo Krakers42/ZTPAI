@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { getPhotos, uploadPhoto, deletePhoto } from "../controllers/PhotoController.js";
+import { getPhotos, uploadPhoto, deletePhoto } from "../controllers/photoController.js";
 import { authMiddleware, requireAuth } from "../middlewares/authenticationMiddleware.js";
 
 const router = express.Router();

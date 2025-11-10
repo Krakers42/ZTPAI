@@ -12,7 +12,13 @@ export const getPhotos = async (req, res) => {
       where: { id_user: userId },
       orderBy: { id_photo: "desc" },
     });
-    res.json(photos);
+
+    const formatted = photos.map(p => ({
+      ...p,
+      created_at: p.created_at ? new Date(p.created_at).toISOString() : new Date().toISOString(),
+    }));
+
+    res.json(formatted);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch photos" });
@@ -37,11 +43,11 @@ export const uploadPhoto = async (req, res) => {
 
     const photoWithDate = {
       ...photo,
-      created_at: photo.created_at || new Date().toISOString(),
+      created_at: photo.created_at ? new Date(photo.created_at).toISOString() : new Date().toISOString(),
     };
 
     res.json({ success: true, photo: photoWithDate });
-  
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to upload photo" });
