@@ -1,20 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Container,
-  TextField,
-  Typography,
-  Paper,
-} from "@mui/material";
+import { Box, Button, Container, TextField, Typography, Paper } from "@mui/material";
+import useMainStyles from "../styles/MainStyles.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
   const nav = useNavigate();
+  const styles = useMainStyles();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -28,45 +23,19 @@ export default function Login() {
   };
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background:
-          "linear-gradient(130deg, rgba(120,197,244,1) 25%, rgba(5,66,103,1) 75%)",
-      }}
-    >
+    <Box sx={styles.container}>
       <Container maxWidth="xs">
-        <Paper
-          elevation={6}
-          sx={{
-            p: 4,
-            borderRadius: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-            BikeBase Login
+        <Paper elevation={6} sx={styles.paper}>
+          {/* LOGO */}
+          <img src="/images/logo.svg" alt="Logo" style={styles.logo} />
+
+          <Typography variant="h4" sx={styles.title}>
+            LOGIN
           </Typography>
 
-          <Typography color="error" sx={{ minHeight: "24px" }}>
-            {msg}
-          </Typography>
+          <Typography sx={styles.errorMsg}>{msg}</Typography>
 
-          <form
-            onSubmit={submit}
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
-          >
+          <form onSubmit={submit} style={styles.form}>
             <TextField
               fullWidth
               label="Email"
@@ -90,35 +59,21 @@ export default function Login() {
               variant="contained"
               size="large"
               type="submit"
-              sx={{
-                mt: 1,
-                bgcolor: "primary.main",
-                "&:hover": { bgcolor: "primary.dark" },
-              }}
+              sx={styles.submitButton}
             >
               CONTINUE
             </Button>
           </form>
 
-          <Box sx={{ textAlign: "center", mt: 3 }}>
+          <Box sx={styles.linkBox}>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              <Link
-                to="/forgot-password"
-                style={{ color: "#0566a6", textDecoration: "none" }}
-              >
+              <Link to="/forgot-password" style={styles.link}>
                 Forgot password?
               </Link>
             </Typography>
 
             <Typography variant="body2">
-              <Link
-                to="/register"
-                style={{
-                  color: "#0566a6",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                }}
-              >
+              <Link to="/register" style={styles.link}>
                 Register
               </Link>
             </Typography>

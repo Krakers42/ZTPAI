@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
-import AccountLayout from "./PageLayout";
+import AccountLayout from "../components/layouts/PageLayout.jsx";
+import { styles } from "../styles/AccountStyles.js";
 
 export default function Account() {
   const [user, setUser] = useState(null);
@@ -48,14 +49,22 @@ export default function Account() {
   if (!user) return <Typography>Error loading user data.</Typography>;
 
   return (
-    <div style={{ display: "flex" }}>
+    <Box sx={{ display: "flex" }}>
       <AccountLayout />
-      <main style={{ flex: 1, padding: "30px" }}>
+      <Box
+        component="main"
+        sx={{
+          ...styles.main,
+          backgroundColor: "#f5f5f5",
+          color: "#333",
+          fontSize: "16px",
+        }}
+      >
         <Typography variant="h4" align="center" gutterBottom>
           ACCOUNT
         </Typography>
 
-        <Card sx={{ maxWidth: 500, margin: "0 auto", borderRadius: 3, boxShadow: 3 }}>
+        <Card sx={styles.card}>
           <CardContent>
             <Typography variant="h6">Name: {user.name}</Typography>
             <Typography variant="h6">Surname: {user.surname}</Typography>
@@ -66,7 +75,7 @@ export default function Account() {
         </Card>
 
         {user.role !== "admin" && (
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+          <Box sx={styles.deleteBox}>
             <Button
               variant="contained"
               color="error"
@@ -79,12 +88,12 @@ export default function Account() {
         )}
 
         {user.role === "admin" && (
-          <Box sx={{ mt: 5 }}>
+          <Box sx={styles.adminBox}>
             <Typography variant="h5" align="center" gutterBottom>
               All Users
             </Typography>
 
-            <Table sx={{ maxWidth: 800, margin: "0 auto", backgroundColor: "white" }}>
+            <Table sx={styles.table}>
               <TableHead>
                 <TableRow>
                   <TableCell><b>Name</b></TableCell>
@@ -118,7 +127,7 @@ export default function Account() {
             </Table>
           </Box>
         )}
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 }

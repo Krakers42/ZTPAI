@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { TextField, Button, Typography, Box, Container, Paper } from "@mui/material";
+import useMainStyles from "../styles/MainStyles.js";
 
-const ForgotPassword = () => {
+export default function ForgotPassword() {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [message, setMessage] = useState("");
+  const styles = useMainStyles();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (password1 !== password2) {
       setMessage("Passwords do not match!");
       return;
@@ -17,10 +19,7 @@ const ForgotPassword = () => {
       const response = await fetch("/reset_password_handler.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          password1,
-          password2,
-        }),
+        body: new URLSearchParams({ password1, password2 }),
       });
 
       if (response.ok) {
@@ -35,62 +34,52 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div id="reset_password_page" className="flex-row-center-center">
-      <div className="container">
-        <img src="/images/logo.svg" alt="logo" className="logo" />
+    <Box sx={styles.container}>
+      <Container maxWidth="xs">
+        <Paper elevation={6} sx={styles.paper}>
+          <img src="/images/logo.svg" alt="Logo" style={styles.logo} />
 
-        <div className="content flex-column-center-center">
-          <h1>RESET PASSWORD</h1>
-          <h2>Forgotten password? No worries!</h2>
+          <Typography variant="h4" sx={styles.title}>RESET PASSWORD</Typography>
+          <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+            Forgotten password? No worries!
+          </Typography>
 
-          <form
-            className="reset-password-form flex-column-center-center"
-            onSubmit={handleSubmit}
-          >
-            <h3>Enter new password:</h3>
+          <form onSubmit={handleSubmit} style={styles.form}>
+            <TextField
+              fullWidth
+              label="New password"
+              type="password"
+              value={password1}
+              onChange={(e) => setPassword1(e.target.value)}
+              required
+            />
+            <TextField
+              fullWidth
+              label="Confirm password"
+              type="password"
+              value={password2}
+              onChange={(e) => setPassword2(e.target.value)}
+              required
+            />
 
-            <div className="whole-input">
-              <i className="icon fa-solid fa-door-open"></i>
-              <input
-                type="password"
-                id="password1"
-                name="password1"
-                placeholder="password"
-                value={password1}
-                onChange={(e) => setPassword1(e.target.value)}
-                required
-              />
-            </div>
-
-            <h3>Enter new password again:</h3>
-
-            <div className="whole-input">
-              <i className="icon fa-solid fa-door-open"></i>
-              <input
-                type="password"
-                id="password2"
-                name="password2"
-                placeholder="password"
-                value={password2}
-                onChange={(e) => setPassword2(e.target.value)}
-                required
-              />
-            </div>
-
-            <button type="submit">
-              <i>CONTINUE</i>
-            </button>
-
-            <div className="links">
-              <a href="/login">Back</a>
-            </div>
-
-            {message && <p className="messages">{message}</p>}
+            <Button type="submit" fullWidth variant="contained" size="large" sx={styles.submitButton}>
+              CONTINUE
+            </Button>
           </form>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-export default ForgotPassword;
+          <Button href="/login" variant="text" sx={{ mt: 2 }}>Back</Button>
+
+          {message && (
+            <Typography
+              variant="body2"
+              color={message.includes("successfully") ? "success.main" : "error.main"}
+              sx={{ mt: 2 }}
+            >
+              {message}
+            </Typography>
+          )}
+        </Paper>
+      </Container>
+    </Box>
+  );
+}

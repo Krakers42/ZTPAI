@@ -7,12 +7,14 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
-import DashboardLayout from "./PageLayout";
+import DashboardLayout from "../components/layouts/PageLayout.jsx";
 import axios from "axios";
+import useDashboardStyles from "../styles/DashboardStyles.js";
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const styles = useDashboardStyles();
 
   useEffect(() => {
     axios
@@ -50,42 +52,17 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <Typography
-        variant="h4"
-        align="center"
-        sx={{ mb: 5, fontFamily: "Roboto, sans-serif" }}
-      >
+      <Typography variant="h4" align="center" sx={styles.title}>
         DASHBOARD
       </Typography>
 
-      <Grid
-        container
-        spacing={3}
-        justifyContent="center"
-        sx={{ px: 3, pb: 5 }}
-      >
+      <Grid container spacing={3} justifyContent="center" sx={styles.gridContainer}>
         {cards.map((card) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={card.label}>
-            <Card
-              sx={{
-                borderRadius: 3,
-                textAlign: "center",
-                height: 250,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                boxShadow: 3,
-                backgroundColor: "white",
-              }}
-            >
+            <Card sx={styles.card}>
               <CardContent>
                 <Typography variant="h6">{card.label}:</Typography>
-                <Typography
-                  variant="h4"
-                  fontWeight="bold"
-                  sx={{ mt: 1 }}
-                >
+                <Typography variant="h4" fontWeight="bold" sx={styles.cardValue}>
                   {card.value}
                 </Typography>
               </CardContent>

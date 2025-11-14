@@ -13,13 +13,17 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import axios from "axios";
-import PhotosLayout from "./PageLayout";
+import PhotosLayout from "../components/layouts/PageLayout.jsx";
+import usePhotosStyles from "../styles/PhotosStyles.js";
+import "../animations/fadeInZoom.css";
 
 export default function Photos() {
   const [photos, setPhotos] = useState([]);
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+
+  const styles = usePhotosStyles();
 
   useEffect(() => {
     axios
@@ -38,9 +42,8 @@ export default function Photos() {
   };
 
   const handleFileChange = (selected) => {
-    const chosen = selected;
-    setFile(chosen);
-    setPreview(URL.createObjectURL(chosen));
+    setFile(selected);
+    setPreview(URL.createObjectURL(selected));
   };
 
   const handleUpload = async () => {
@@ -79,7 +82,7 @@ export default function Photos() {
   return (
     <Box sx={{ display: "flex" }}>
       <PhotosLayout />
-      <main style={{ flex: 1, padding: 30 }}>
+      <main style={styles.main}>
         <Typography variant="h4" align="center" gutterBottom>
           PHOTOS
         </Typography>
@@ -89,16 +92,7 @@ export default function Photos() {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onClick={() => document.getElementById("photoUploadInput").click()}
-          sx={{
-            border: "2px dashed #9e9e9e",
-            borderRadius: 3,
-            p: 3,
-            textAlign: "center",
-            mb: 4,
-            backgroundColor: isDragging ? "#f5f5f5" : "transparent",
-            cursor: "pointer",
-            transition: "background-color 0.3s ease",
-          }}
+          sx={styles.uploadPaper(isDragging)}
         >
           <AddPhotoAlternateIcon sx={{ fontSize: 40, color: "#757575" }} />
           <Typography variant="body2" color="textSecondary">
@@ -114,35 +108,12 @@ export default function Photos() {
         </Paper>
 
         {preview && (
-          <Box sx={{ mb: 3, textAlign: "center" }}>
+          <Box sx={styles.previewBox}>
             <Typography variant="subtitle1" gutterBottom>
               Preview
             </Typography>
-            <Box
-              component="img"
-              src={preview}
-              alt="preview"
-              sx={{
-                width: "100%",
-                maxWidth: 400,
-                height: "auto",
-                borderRadius: 3,
-                boxShadow: 2,
-                opacity: 0,
-                transform: "scale(0.95)",
-                animation: "fadeInZoom 0.4s ease forwards",
-                "@keyframes fadeInZoom": {
-                  "0%": { opacity: 0, transform: "scale(0.95)" },
-                  "100%": { opacity: 1, transform: "scale(1)" },
-                },
-              }}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2 }}
-              onClick={handleUpload}
-            >
+            <Box component="img" src={preview} alt="preview" sx={styles.previewImage} />
+            <Button variant="contained" color="primary" sx={styles.uploadButton} onClick={handleUpload}>
               Upload Photo
             </Button>
           </Box>
@@ -152,11 +123,11 @@ export default function Photos() {
           {photos.length ? (
             photos.map((photo) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={photo.id_photo}>
-                <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
+                <Card sx={styles.card}>
                   {photo.path && (
                     <CardMedia
                       component="img"
-                      height="200"
+                      sx={styles.cardMedia}
                       image={`${import.meta.env.VITE_API_URL}/uploads/${photo.path}`}
                       alt="user photo"
                     />
@@ -173,18 +144,14 @@ export default function Photos() {
                         : "Unknown date"}
                     </Typography>
                   </CardContent>
-                  <IconButton
-                    color="error"
-                    onClick={() => handleDelete(photo.id_photo)}
-                    sx={{ alignSelf: "flex-end", margin: 1 }}
-                  >
+                  <IconButton color="error" sx={styles.deleteButton} onClick={() => handleDelete(photo.id_photo)}>
                     <DeleteIcon />
                   </IconButton>
                 </Card>
               </Grid>
             ))
           ) : (
-            <Typography>No photos available</Typography>
+            <Typography sx={styles.noPhotosText}>No photos available</Typography>
           )}
         </Grid>
       </main>

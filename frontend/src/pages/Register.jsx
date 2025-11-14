@@ -11,6 +11,7 @@ import {
   MenuItem,
   InputAdornment,
 } from "@mui/material";
+import useMainStyles from "../styles/MainStyles.js";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -21,20 +22,16 @@ export default function Register() {
     confirmPassword: "",
     role: "",
   });
-
   const [msg, setMsg] = useState("");
   const nav = useNavigate();
+  const styles = useMainStyles();
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const submit = async (e) => {
     e.preventDefault();
-
     if (
       !form.name ||
       !form.surname ||
@@ -46,20 +43,13 @@ export default function Register() {
       setMsg("Please fill all required fields");
       return;
     }
-
     if (form.password !== form.confirmPassword) {
       setMsg("Passwords do not match");
       return;
     }
 
     try {
-      await axios.post("/api/auth/register", {
-        name: form.name,
-        surname: form.surname,
-        email: form.email,
-        password: form.password,
-        role: form.role,
-      });
+      await axios.post("/api/auth/register", form);
       setMsg("Account created!");
       nav("/login");
     } catch (err) {
@@ -68,65 +58,20 @@ export default function Register() {
   };
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background:
-          "linear-gradient(130deg, rgba(120,197,244,1) 25%, rgba(5,66,103,1) 75%)",
-        fontFamily: "'Roboto', sans-serif",
-      }}
-    >
+    <Box sx={styles.container}>
       <Container maxWidth="xs">
-        <Paper
-          elevation={6}
-          sx={{
-            p: 4,
-            borderRadius: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <img
-            src="/public/images/logo.svg"
-            alt="Logo"
-            style={{
-              width: "100px",
-              marginBottom: "10px",
-              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))",
-            }}
-          />
+        <Paper elevation={6} sx={styles.paper}>
+          <img src="/images/logo.svg" alt="Logo" style={styles.logo} />
 
-          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-            REGISTER
-          </Typography>
+          <Typography variant="h4" sx={styles.title}>REGISTER</Typography>
+          <Typography variant="h6" color="text.secondary">Welcome!</Typography>
+          <Typography sx={styles.errorMsg}>{msg}</Typography>
 
-          <Typography color="text.secondary" variant="h6">
-            Welcome!
-          </Typography>
-
-          <Typography color="error" sx={{ minHeight: "24px" }}>
-            {msg}
-          </Typography>
-
-          <form
-            onSubmit={submit}
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
-          >
+          <form onSubmit={submit} style={styles.form}>
             <TextField
               fullWidth
               label="Name"
               name="name"
-              variant="outlined"
               value={form.name}
               onChange={handleChange}
               required
@@ -138,12 +83,10 @@ export default function Register() {
                 ),
               }}
             />
-
             <TextField
               fullWidth
               label="Surname"
               name="surname"
-              variant="outlined"
               value={form.surname}
               onChange={handleChange}
               required
@@ -155,13 +98,11 @@ export default function Register() {
                 ),
               }}
             />
-
             <TextField
               fullWidth
               label="Email"
               name="email"
               type="email"
-              variant="outlined"
               value={form.email}
               onChange={handleChange}
               required
@@ -173,13 +114,11 @@ export default function Register() {
                 ),
               }}
             />
-
             <TextField
               fullWidth
               label="Password"
               name="password"
               type="password"
-              variant="outlined"
               value={form.password}
               onChange={handleChange}
               required
@@ -191,13 +130,11 @@ export default function Register() {
                 ),
               }}
             />
-
             <TextField
               fullWidth
               label="Confirm Password"
               name="confirmPassword"
               type="password"
-              variant="outlined"
               value={form.confirmPassword}
               onChange={handleChange}
               required
@@ -209,13 +146,11 @@ export default function Register() {
                 ),
               }}
             />
-
             <TextField
               select
               fullWidth
               label="Choose Role"
               name="role"
-              variant="outlined"
               value={form.role}
               onChange={handleChange}
               required
@@ -232,26 +167,19 @@ export default function Register() {
             </TextField>
 
             <Button
+              type="submit"
               fullWidth
               variant="contained"
               size="large"
-              type="submit"
-              sx={{
-                mt: 1,
-                bgcolor: "primary.main",
-                "&:hover": { bgcolor: "primary.dark" },
-              }}
+              sx={styles.submitButton}
             >
               CONTINUE
             </Button>
           </form>
 
-          <Box sx={{ textAlign: "center", mt: 2 }}>
+          <Box sx={styles.linkBox}>
             <Typography variant="body2">
-              Already have an account?{" "}
-              <Link to="/login" style={{ color: "#0566a6" }}>
-                Login
-              </Link>
+              Already have an account? <Link to="/login" style={styles.link}>Login</Link>
             </Typography>
           </Box>
         </Paper>

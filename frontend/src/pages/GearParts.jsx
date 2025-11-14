@@ -4,9 +4,12 @@ import {
   Table, TableHead, TableBody, TableRow, TableCell,
   Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions
 } from '@mui/material';
-import GearPartsLayout from "./PageLayout";
+import GearPartsLayout from "../components/layouts/PageLayout.jsx";
+import useGearPartsStyles from "../styles/GearPartsStyles.js";
 
 export default function GearParts() {
+  const styles = useGearPartsStyles();
+
   const [gearParts, setGearParts] = useState([]);
   const [form, setForm] = useState({ purchase_date: '', name: '', value: '', comment: '' });
   const [editPart, setEditPart] = useState(null);
@@ -56,10 +59,10 @@ export default function GearParts() {
 
   return (
     <GearPartsLayout>
-      <div style={{ padding: '2rem' }}>
-        <h1>GEAR & PARTS</h1>
+      <div style={styles.main}>
+        <h1 style={styles.title}>GEAR & PARTS</h1>
 
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+        <div style={styles.formRow}>
           <TextField
             label="Purchase Date"
             type="date"
@@ -88,17 +91,18 @@ export default function GearParts() {
           </Button>
         </div>
 
-        <Table>
+        <Table sx={styles.table}>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Purchase Date</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Value</TableCell>
-              <TableCell>Comment</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell sx={styles.tableHeaderCell}>ID</TableCell>
+              <TableCell sx={styles.tableHeaderCell}>Purchase Date</TableCell>
+              <TableCell sx={styles.tableHeaderCell}>Name</TableCell>
+              <TableCell sx={styles.tableHeaderCell}>Value</TableCell>
+              <TableCell sx={styles.tableHeaderCell}>Comment</TableCell>
+              <TableCell sx={styles.tableHeaderCell}>Actions</TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {gearParts.map(part => (
               <TableRow key={part.id_gear_part}>
@@ -108,20 +112,22 @@ export default function GearParts() {
                 <TableCell>{part.value}</TableCell>
                 <TableCell>{part.comment}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => setEditPart(part)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => handleDelete(part.id_gear_part)}
-                  >
-                    Delete
-                  </Button>
+                  <div style={styles.actionButtons}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => setEditPart(part)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => handleDelete(part.id_gear_part)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -130,7 +136,8 @@ export default function GearParts() {
 
         <Dialog open={!!editPart} onClose={() => setEditPart(null)}>
           <DialogTitle>Edit Part</DialogTitle>
-          <DialogContent style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: '300px' }}>
+
+          <DialogContent sx={styles.dialogContent}>
             <TextField
               label="Purchase Date"
               type="date"
@@ -147,7 +154,7 @@ export default function GearParts() {
               label="Value"
               type="number"
               value={editPart?.value || ''}
-              onChange={e => setEditPart(prev => prev ? { ...prev, value: parseInt(e.target.value) || 0 } : null)}
+              onChange={e => setEditPart(prev => prev ? { ...prev, value: parseFloat(e.target.value) || 0 } : null)}
             />
             <TextField
               label="Comment"
@@ -155,6 +162,7 @@ export default function GearParts() {
               onChange={e => setEditPart(prev => prev ? { ...prev, comment: e.target.value } : null)}
             />
           </DialogContent>
+
           <DialogActions>
             <Button onClick={() => setEditPart(null)}>Cancel</Button>
             <Button onClick={handleEdit} variant="contained" color="primary">

@@ -11,10 +11,12 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
-import BikesLayout from "./PageLayout";
+import BikesLayout from "../components/layouts/PageLayout.jsx";
+import useBikesStyles from "../styles/BikesStyles.js";
 
 export default function Bikes() {
   const [bikes, setBikes] = useState([]);
+  const styles = useBikesStyles();
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/api/bikes`).then((res) => {
@@ -32,7 +34,7 @@ export default function Bikes() {
   return (
     <div style={{ display: "flex" }}>
       <BikesLayout />
-      <main style={{ flex: 1, padding: "30px" }}>
+      <main style={styles.main}>
         <Typography variant="h4" align="center" gutterBottom>
           BIKES
         </Typography>
@@ -41,11 +43,11 @@ export default function Bikes() {
           {bikes.length ? (
             bikes.map((bike) => (
               <Grid item xs={12} md={6} lg={4} key={bike.id_bike_card}>
-                <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
+                <Card sx={styles.card}>
                   {bike.photo_path && (
                     <CardMedia
                       component="img"
-                      height="200"
+                      sx={styles.cardMedia}
                       image={`${import.meta.env.VITE_API_URL}/uploads/${bike.photo_path}`}
                       alt={bike.name}
                     />
@@ -58,8 +60,8 @@ export default function Bikes() {
                   </CardContent>
                   <IconButton
                     color="error"
+                    sx={styles.deleteButton}
                     onClick={() => handleDelete(bike.id_bike_card)}
-                    sx={{ alignSelf: "flex-end", margin: 1 }}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -67,7 +69,7 @@ export default function Bikes() {
               </Grid>
             ))
           ) : (
-            <Typography>NO BIKES AVAILABLE</Typography>
+            <Typography sx={styles.noBikesText}>NO BIKES AVAILABLE</Typography>
           )}
         </Grid>
 
@@ -75,7 +77,7 @@ export default function Bikes() {
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          sx={{ position: "fixed", bottom: 30, right: 30 }}
+          sx={styles.addButton}
           onClick={() => (window.location.href = "/add-bike")}
         >
           Add Bike

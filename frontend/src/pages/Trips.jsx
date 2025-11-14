@@ -5,7 +5,8 @@ import {
   TableRow, TableCell, Dialog, DialogTitle, DialogContent, DialogActions,
   Paper, Stack
 } from "@mui/material";
-import TripsLayout from "./PageLayout";
+import TripsLayout from "../components/layouts/PageLayout.jsx";
+import useTripsStyles from "../styles/TripsStyles.js";
 
 export default function Trips() {
   const [trips, setTrips] = useState([]);
@@ -14,6 +15,7 @@ export default function Trips() {
   const [loading, setLoading] = useState(false);
 
   const API = import.meta.env.VITE_API_URL;
+  const styles = useTripsStyles();
 
   useEffect(() => {
     setLoading(true);
@@ -81,10 +83,10 @@ export default function Trips() {
 
   return (
     <TripsLayout>
-      <Box sx={{ p: 4 }}>
+      <Box sx={styles.container}>
         <Typography variant="h4" align="center" gutterBottom>TRIPS</Typography>
 
-        <Paper sx={{ p: 2, mb: 3 }}>
+        <Paper sx={styles.formPaper}>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
             <TextField
               label="Date"
@@ -122,7 +124,7 @@ export default function Trips() {
           </Stack>
         </Paper>
 
-        <Paper>
+        <Paper sx={styles.tablePaper}>
           <Table>
             <TableHead>
               <TableRow>
@@ -150,8 +152,8 @@ export default function Trips() {
                   <TableCell>{trip.elevation ?? ""}</TableCell>
                   <TableCell>{trip.description ?? ""}</TableCell>
                   <TableCell>
-                    <Button size="small" onClick={() => openEdit(trip)}>Edit</Button>
-                    <Button size="small" color="error" onClick={() => handleDelete(trip.id_trip)}>Delete</Button>
+                    <Button size="small" sx={styles.actionsButton} onClick={() => openEdit(trip)}>Edit</Button>
+                    <Button size="small" color="error" sx={styles.actionsButton} onClick={() => handleDelete(trip.id_trip)}>Delete</Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -161,8 +163,8 @@ export default function Trips() {
 
         <Dialog open={!!editTrip} onClose={() => setEditTrip(null)}>
           <DialogTitle>Edit trip</DialogTitle>
-          <DialogContent sx={{ minWidth: 360 }}>
-            <Stack spacing={2} sx={{ mt: 1 }}>
+          <DialogContent sx={styles.dialogContent}>
+            <Stack spacing={2} sx={styles.stackSpacing}>
               <TextField
                 label="Date"
                 type="date"
