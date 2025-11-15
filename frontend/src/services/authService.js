@@ -15,3 +15,7 @@ export async function forgotPassword(email) {
 export async function resetPassword(token, password) {
   return axios.post("/api/auth/reset-password", { token, password });
 }
+
+export async function logout() {
+  return axios.post("/api/auth/logout");
+}

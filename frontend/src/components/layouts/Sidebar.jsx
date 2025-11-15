@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import {
   Box,
   Drawer,
@@ -23,6 +22,7 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 import useSidebarStyles from "../../styles/SidebarStyles.js";
+import { logout } from "../../services/authService.js";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ export default function Sidebar() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/api/auth/logout");
+      await logout();
       localStorage.removeItem("token");
       navigate("/login");
     } catch (err) {
