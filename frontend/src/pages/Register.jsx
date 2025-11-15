@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Box,
@@ -12,6 +11,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import useMainStyles from "../styles/MainStyles.js";
+import { registerUser } from "../services/authService.js";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -22,6 +22,7 @@ export default function Register() {
     confirmPassword: "",
     role: "",
   });
+
   const [msg, setMsg] = useState("");
   const nav = useNavigate();
   const styles = useMainStyles();
@@ -32,6 +33,7 @@ export default function Register() {
 
   const submit = async (e) => {
     e.preventDefault();
+
     if (
       !form.name ||
       !form.surname ||
@@ -43,13 +45,14 @@ export default function Register() {
       setMsg("Please fill all required fields");
       return;
     }
+
     if (form.password !== form.confirmPassword) {
       setMsg("Passwords do not match");
       return;
     }
 
     try {
-      await axios.post("/api/auth/register", form);
+      await registerUser(form);
       setMsg("Account created!");
       nav("/login");
     } catch (err) {
@@ -83,6 +86,7 @@ export default function Register() {
                 ),
               }}
             />
+
             <TextField
               fullWidth
               label="Surname"
@@ -98,6 +102,7 @@ export default function Register() {
                 ),
               }}
             />
+
             <TextField
               fullWidth
               label="Email"
@@ -114,6 +119,7 @@ export default function Register() {
                 ),
               }}
             />
+
             <TextField
               fullWidth
               label="Password"
@@ -130,6 +136,7 @@ export default function Register() {
                 ),
               }}
             />
+
             <TextField
               fullWidth
               label="Confirm Password"
@@ -146,6 +153,7 @@ export default function Register() {
                 ),
               }}
             />
+
             <TextField
               select
               fullWidth
@@ -179,7 +187,8 @@ export default function Register() {
 
           <Box sx={styles.linkBox}>
             <Typography variant="body2">
-              Already have an account? <Link to="/login" style={styles.link}>Login</Link>
+              Already have an account?{" "}
+              <Link to="/login" style={styles.link}>Login</Link>
             </Typography>
           </Box>
         </Paper>

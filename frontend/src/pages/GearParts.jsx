@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
   Table, TableHead, TableBody, TableRow, TableCell,
   Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions
 } from '@mui/material';
+
 import GearPartsLayout from "../components/layouts/PageLayout.jsx";
 import useGearPartsStyles from "../styles/GearPartsStyles.js";
+
+import {
+  getGearParts,
+  addGearPart,
+  updateGearPart,
+  deleteGearPart
+} from "../services/gearPartsService.js";
 
 export default function GearParts() {
   const styles = useGearPartsStyles();
@@ -15,46 +22,32 @@ export default function GearParts() {
   const [editPart, setEditPart] = useState(null);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/api/gear_parts`)
-      .then(res => setGearParts(res.data))
-      .catch(err => console.error("Error fetching gear parts:", err));
+    getGearParts().then(setGearParts);
   }, []);
 
   const handleAdd = async () => {
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/gear_parts/add`, form);
-      setGearParts(prev => [...prev, res.data]);
-      setForm({ purchase_date: '', name: '', value: '', comment: '' });
-    } catch (err) {
-      console.error("Error adding gear part:", err);
-    }
+    const newPart = await addGearPart(form);
+    setGearParts(prev => [...prev, newPart]);
+    setForm({ purchase_date: '', name: '', value: '', comment: '' });
   };
 
   const handleEdit = async () => {
     if (!editPart) return;
-    try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/gear_parts/edit/${editPart.id_gear_part}`,
-        editPart
-      );
-      const updatedPart = res.data;
-      setGearParts(prev =>
-        prev.map(p => p.id_gear_part === updatedPart.id_gear_part ? updatedPart : p)
-      );
-      setEditPart(null);
-    } catch (err) {
-      console.error("Error editing gear part:", err);
-    }
+
+    const updated = await updateGearPart(editPart.id_gear_part, editPart);
+
+    setGearParts(prev =>
+      prev.map(p => p.id_gear_part === updated.id_gear_part ? updated : p)
+    );
+
+    setEditPart(null);
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete part?')) return;
-    try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/gear_parts/delete/${id}`);
-      setGearParts(prev => prev.filter(p => p.id_gear_part !== id));
-    } catch (err) {
-      console.error("Error deleting gear part:", err);
-    }
+    if (!window.confirm("Delete part?")) return;
+
+    await deleteGearPart(id);
+    setGearParts(prev => prev.filter(p => p.id_gear_part !== id));
   };
 
   return (
@@ -62,6 +55,7 @@ export default function GearParts() {
       <div style={styles.main}>
         <h1 style={styles.title}>GEAR & PARTS</h1>
 
+        {/* Add form */}
         <div style={styles.formRow}>
           <TextField
             label="Purchase Date"
@@ -86,11 +80,12 @@ export default function GearParts() {
             value={form.comment}
             onChange={e => setForm({ ...form, comment: e.target.value })}
           />
-          <Button variant="contained" color="primary" onClick={handleAdd}>
+          <Button variant="contained" onClick={handleAdd}>
             Add Part
           </Button>
         </div>
 
+        {/* Table */}
         <Table sx={styles.table}>
           <TableHead>
             <TableRow>
@@ -107,7 +102,7 @@ export default function GearParts() {
             {gearParts.map(part => (
               <TableRow key={part.id_gear_part}>
                 <TableCell>{part.id_gear_part}</TableCell>
-                <TableCell>{part.purchase_date ? part.purchase_date.split('T')[0] : ''}</TableCell>
+                <TableCell>{part.purchase_date?.split("T")[0]}</TableCell>
                 <TableCell>{part.name}</TableCell>
                 <TableCell>{part.value}</TableCell>
                 <TableCell>{part.comment}</TableCell>
@@ -115,7 +110,6 @@ export default function GearParts() {
                   <div style={styles.actionButtons}>
                     <Button
                       variant="outlined"
-                      color="primary"
                       onClick={() => setEditPart(part)}
                     >
                       Edit
@@ -134,6 +128,7 @@ export default function GearParts() {
           </TableBody>
         </Table>
 
+        {/* Edit dialog */}
         <Dialog open={!!editPart} onClose={() => setEditPart(null)}>
           <DialogTitle>Edit Part</DialogTitle>
 
@@ -142,30 +137,38 @@ export default function GearParts() {
               label="Purchase Date"
               type="date"
               InputLabelProps={{ shrink: true }}
-              value={editPart?.purchase_date ? editPart.purchase_date.split('T')[0] : ''}
-              onChange={e => setEditPart(prev => prev ? { ...prev, purchase_date: e.target.value } : null)}
+              value={editPart?.purchase_date?.split("T")[0] || ""}
+              onChange={e =>
+                setEditPart(prev => ({ ...prev, purchase_date: e.target.value }))
+              }
             />
             <TextField
               label="Name"
-              value={editPart?.name || ''}
-              onChange={e => setEditPart(prev => prev ? { ...prev, name: e.target.value } : null)}
+              value={editPart?.name || ""}
+              onChange={e =>
+                setEditPart(prev => ({ ...prev, name: e.target.value }))
+              }
             />
             <TextField
               label="Value"
               type="number"
-              value={editPart?.value || ''}
-              onChange={e => setEditPart(prev => prev ? { ...prev, value: parseFloat(e.target.value) || 0 } : null)}
+              value={editPart?.value || ""}
+              onChange={e =>
+                setEditPart(prev => ({ ...prev, value: e.target.value }))
+              }
             />
             <TextField
               label="Comment"
-              value={editPart?.comment || ''}
-              onChange={e => setEditPart(prev => prev ? { ...prev, comment: e.target.value } : null)}
+              value={editPart?.comment || ""}
+              onChange={e =>
+                setEditPart(prev => ({ ...prev, comment: e.target.value }))
+              }
             />
           </DialogContent>
 
           <DialogActions>
             <Button onClick={() => setEditPart(null)}>Cancel</Button>
-            <Button onClick={handleEdit} variant="contained" color="primary">
+            <Button onClick={handleEdit} variant="contained">
               Save
             </Button>
           </DialogActions>

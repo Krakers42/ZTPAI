@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from "react";
 import { TextField, Button, Box, Typography, Paper } from "@mui/material";
-import axios from "axios";
 import AddBikesLayout from "../components/layouts/PageLayout.jsx";
 import useAddBikeStyles from "../styles/AddBikeStyles.js";
 import "../animations/fadeInZoom.css";
+
+import { addBike } from "../services/bikesService.js";
 
 export default function AddBike() {
   const [title, setTitle] = useState("");
@@ -14,8 +15,7 @@ export default function AddBike() {
 
   const styles = useAddBikeStyles();
 
-  const handleFileChange = (f) => {
-    const selectedFile = f;
+  const handleFileChange = (selectedFile) => {
     setFile(selectedFile);
     setPreview(URL.createObjectURL(selectedFile));
   };
@@ -28,22 +28,18 @@ export default function AddBike() {
     }
   }, []);
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
+  const handleDragOver = (e) => { e.preventDefault(); setIsDragging(true); };
   const handleDragLeave = () => setIsDragging(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", title);
-    formData.append("description", description);
-    if (file) formData.append("image", file);
-
-    await axios.post(`${import.meta.env.VITE_API_URL}/api/bikes/add`, formData);
-    window.location.href = "/bikes";
+    try {
+      await addBike({ name: title, description, file });
+      window.location.href = "/bikes"; // Można później zamienić na navigate
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add bike");
+    }
   };
 
   return (
@@ -56,20 +52,8 @@ export default function AddBike() {
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField
-              label="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-            <TextField
-              label="Description"
-              multiline
-              rows={4}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
+            <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+            <TextField label="Description" multiline rows={4} value={description} onChange={(e) => setDescription(e.target.value)} required />
 
             <Box
               onDrop={handleDrop}
@@ -90,15 +74,7 @@ export default function AddBike() {
               />
             </Box>
 
-            {preview && (
-              <Box
-                component="img"
-                src={preview}
-                alt="preview"
-                sx={styles.preview}
-                className="fadeInZoom"
-              />
-            )}
+            {preview && <Box component="img" src={preview} alt="preview" sx={styles.preview} className="fadeInZoom" />}
 
             <Button variant="contained" color="primary" type="submit">
               SEND

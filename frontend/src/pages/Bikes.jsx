@@ -10,24 +10,24 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import axios from "axios";
+
 import BikesLayout from "../components/layouts/PageLayout.jsx";
 import useBikesStyles from "../styles/BikesStyles.js";
+
+import { getBikes, deleteBike } from "../services/bikesService.js";
 
 export default function Bikes() {
   const [bikes, setBikes] = useState([]);
   const styles = useBikesStyles();
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/api/bikes`).then((res) => {
-      setBikes(res.data);
-    });
+    getBikes().then(setBikes);
   }, []);
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this bike?")) {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/bikes/${id}`);
-      setBikes(bikes.filter((b) => b.id_bike_card !== id));
+      await deleteBike(id);
+      setBikes((prev) => prev.filter((b) => b.id_bike_card !== id));
     }
   };
 
@@ -58,6 +58,7 @@ export default function Bikes() {
                       {bike.description}
                     </Typography>
                   </CardContent>
+
                   <IconButton
                     color="error"
                     sx={styles.deleteButton}

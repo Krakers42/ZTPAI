@@ -1,8 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { Box, Button, Container, TextField, Typography, Paper } from "@mui/material";
 import useMainStyles from "../styles/MainStyles.js";
+import { login } from "../services/authService.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ export default function Login() {
   const submit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/auth/login", { email, password });
+      await login(email, password);
       setMsg("Logged in!");
       nav("/dashboard");
     } catch (err) {
@@ -26,56 +26,27 @@ export default function Login() {
     <Box sx={styles.container}>
       <Container maxWidth="xs">
         <Paper elevation={6} sx={styles.paper}>
-          {/* LOGO */}
           <img src="/images/logo.svg" alt="Logo" style={styles.logo} />
 
-          <Typography variant="h4" sx={styles.title}>
-            LOGIN
-          </Typography>
-
+          <Typography variant="h4" sx={styles.title}>LOGIN</Typography>
           <Typography sx={styles.errorMsg}>{msg}</Typography>
 
           <form onSubmit={submit} style={styles.form}>
-            <TextField
-              fullWidth
-              label="Email"
-              variant="outlined"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              type="password"
-              variant="outlined"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <TextField fullWidth label="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <TextField fullWidth label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
-            <Button
-              fullWidth
-              variant="contained"
-              size="large"
-              type="submit"
-              sx={styles.submitButton}
-            >
+            <Button fullWidth variant="contained" size="large" type="submit" sx={styles.submitButton}>
               CONTINUE
             </Button>
           </form>
 
           <Box sx={styles.linkBox}>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              <Link to="/forgot-password" style={styles.link}>
-                Forgot password?
-              </Link>
+              <Link to="/forgot-password" style={styles.link}>Forgot password?</Link>
             </Typography>
 
             <Typography variant="body2">
-              <Link to="/register" style={styles.link}>
-                Register
-              </Link>
+              <Link to="/register" style={styles.link}>Register</Link>
             </Typography>
           </Box>
         </Paper>

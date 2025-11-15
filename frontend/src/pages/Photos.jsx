@@ -1,21 +1,15 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Grid,
-  IconButton,
-  Button,
-  Box,
-  Paper,
+  Card, CardMedia, CardContent, Typography,
+  Grid, IconButton, Button, Box, Paper
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import axios from "axios";
 import PhotosLayout from "../components/layouts/PageLayout.jsx";
 import usePhotosStyles from "../styles/PhotosStyles.js";
 import "../animations/fadeInZoom.css";
+
+import { getPhotos, uploadPhoto, deletePhoto } from "../services/photosService.js";
 
 export default function Photos() {
   const [photos, setPhotos] = useState([]);
@@ -26,18 +20,24 @@ export default function Photos() {
   const styles = usePhotosStyles();
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/photos`, { withCredentials: true })
-      .then((res) => setPhotos(res.data))
-      .catch(console.error);
+    const fetchPhotos = async () => {
+      try {
+        const data = await getPhotos();
+        setPhotos(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchPhotos();
   }, []);
 
   const handleDelete = async (id) => {
-    if (window.confirm("Delete this photo?")) {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/photos/${id}`, {
-        withCredentials: true,
-      });
-      setPhotos(photos.filter((p) => p.id_photo !== id));
+    if (!window.confirm("Delete this photo?")) return;
+    try {
+      await deletePhoto(id);
+      setPhotos((prev) => prev.filter((p) => p.id_photo !== id));
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -48,15 +48,9 @@ export default function Photos() {
 
   const handleUpload = async () => {
     if (!file) return alert("Please select a file first!");
-
-    const fd = new FormData();
-    fd.append("image", file);
-
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/photos/upload`, fd, {
-        withCredentials: true,
-      });
-      setPhotos([res.data.photo, ...photos]);
+      const res = await uploadPhoto(file);
+      setPhotos((prev) => [res.photo, ...prev]);
       setFile(null);
       setPreview(null);
     } catch (err) {
@@ -109,9 +103,7 @@ export default function Photos() {
 
         {preview && (
           <Box sx={styles.previewBox}>
-            <Typography variant="subtitle1" gutterBottom>
-              Preview
-            </Typography>
+            <Typography variant="subtitle1" gutterBottom>Preview</Typography>
             <Box component="img" src={preview} alt="preview" sx={styles.previewImage} />
             <Button variant="contained" color="primary" sx={styles.uploadButton} onClick={handleUpload}>
               Upload Photo
@@ -136,11 +128,7 @@ export default function Photos() {
                     <Typography variant="body2" color="text.secondary">
                       Uploaded on:{" "}
                       {photo.created_at
-                        ? new Date(photo.created_at).toLocaleDateString("pl-PL", {
-                            day: "2-digit",
-                            month: "2-digit",
-                            year: "numeric",
-                          })
+                        ? new Date(photo.created_at).toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric" })
                         : "Unknown date"}
                     </Typography>
                   </CardContent>

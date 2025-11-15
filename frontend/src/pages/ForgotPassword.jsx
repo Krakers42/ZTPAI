@@ -1,35 +1,34 @@
 import { useState } from "react";
 import { TextField, Button, Typography, Box, Container, Paper } from "@mui/material";
+import { useParams, useNavigate } from "react-router-dom";
 import useMainStyles from "../styles/MainStyles.js";
+import { resetPassword } from "../services/authService.js";
 
 export default function ForgotPassword() {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [message, setMessage] = useState("");
+
   const styles = useMainStyles();
+  const { token } = useParams();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (password1 !== password2) {
       setMessage("Passwords do not match!");
       return;
     }
 
     try {
-      const response = await fetch("/reset_password_handler.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ password1, password2 }),
-      });
+      await resetPassword(token, password1);
+      setMessage("Password successfully changed!");
 
-      if (response.ok) {
-        setMessage("Password successfully changed!");
-      } else {
-        setMessage("An error occurred. Try again.");
-      }
+      setTimeout(() => navigate("/login"), 1500);
     } catch (error) {
       console.error(error);
-      setMessage("Connection error.");
+      setMessage(error.response?.data?.error || "An error occurred.");
     }
   };
 
@@ -39,9 +38,12 @@ export default function ForgotPassword() {
         <Paper elevation={6} sx={styles.paper}>
           <img src="/images/logo.svg" alt="Logo" style={styles.logo} />
 
-          <Typography variant="h4" sx={styles.title}>RESET PASSWORD</Typography>
+          <Typography variant="h4" sx={styles.title}>
+            RESET PASSWORD
+          </Typography>
+
           <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-            Forgotten password? No worries!
+            Choose a new password
           </Typography>
 
           <form onSubmit={handleSubmit} style={styles.form}>
@@ -53,6 +55,7 @@ export default function ForgotPassword() {
               onChange={(e) => setPassword1(e.target.value)}
               required
             />
+
             <TextField
               fullWidth
               label="Confirm password"
@@ -62,12 +65,16 @@ export default function ForgotPassword() {
               required
             />
 
-            <Button type="submit" fullWidth variant="contained" size="large" sx={styles.submitButton}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              size="large"
+              sx={styles.submitButton}
+            >
               CONTINUE
             </Button>
           </form>
-
-          <Button href="/login" variant="text" sx={{ mt: 2 }}>Back</Button>
 
           {message && (
             <Typography
@@ -78,6 +85,14 @@ export default function ForgotPassword() {
               {message}
             </Typography>
           )}
+
+          <Button
+            onClick={() => navigate("/login")}
+            variant="text"
+            sx={{ mt: 2 }}
+          >
+            Back
+          </Button>
         </Paper>
       </Container>
     </Box>

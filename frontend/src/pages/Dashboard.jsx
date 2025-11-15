@@ -7,9 +7,10 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
+
 import DashboardLayout from "../components/layouts/PageLayout.jsx";
-import axios from "axios";
 import useDashboardStyles from "../styles/DashboardStyles.js";
+import { getDashboardStats } from "../services/dashboardService.js";
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -17,11 +18,19 @@ export default function Dashboard() {
   const styles = useDashboardStyles();
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/dashboard`, { withCredentials: true })
-      .then((res) => setStats(res.data))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+    async function loadData() {
+      try {
+        const response = await getDashboardStats();
+        setStats(response.data);
+      } catch (error) {
+        console.error("Dashboard load error:", error);
+        setStats(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadData();
   }, []);
 
   if (loading)

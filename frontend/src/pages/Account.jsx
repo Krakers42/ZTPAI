@@ -12,9 +12,9 @@ import {
   Box,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import axios from "axios";
 import AccountLayout from "../components/layouts/PageLayout.jsx";
 import { styles } from "../styles/AccountStyles.js";
+import { getCurrentUser, getAllUsers, deleteUser } from "../services/accountService.js";
 
 export default function Account() {
   const [user, setUser] = useState(null);
@@ -22,26 +22,40 @@ export default function Account() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/api/users/me`).then((res) => {
-      setUser(res.data);
-      if (res.data.role === "admin") {
-        axios
-          .get(`${import.meta.env.VITE_API_URL}/api/users`)
-          .then((res) => setUsers(res.data))
-          .finally(() => setLoading(false));
-      } else {
+    const fetchData = async () => {
+      try {
+        const me = await getCurrentUser();
+        setUser(me);
+
+        if (me.role === "admin") {
+          const allUsers = await getAllUsers();
+          setUsers(allUsers);
+        }
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      } finally {
         setLoading(false);
       }
-    });
+    };
+
+    fetchData();
   }, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
-    const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
-    if (res.data.logout) {
-      window.location.href = "/login";
-    } else {
-      setUsers(users.filter((u) => u.id_user !== id));
+
+    try {
+      const res = await deleteUser(id);
+
+      if (res.logout) {
+        window.location.href = "/login";
+      } else {
+        setUsers(prev => prev.filter(u => u.id_user !== id));
+        if (user.id_user === id) setUser(null);
+      }
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      alert("Delete failed");
     }
   };
 
@@ -51,18 +65,8 @@ export default function Account() {
   return (
     <Box sx={{ display: "flex" }}>
       <AccountLayout />
-      <Box
-        component="main"
-        sx={{
-          ...styles.main,
-          backgroundColor: "#f5f5f5",
-          color: "#333",
-          fontSize: "16px",
-        }}
-      >
-        <Typography variant="h4" align="center" gutterBottom>
-          ACCOUNT
-        </Typography>
+      <Box component="main" sx={{ ...styles.main, backgroundColor: "#f5f5f5", color: "#333", fontSize: "16px" }}>
+        <Typography variant="h4" align="center" gutterBottom>ACCOUNT</Typography>
 
         <Card sx={styles.card}>
           <CardContent>
@@ -76,12 +80,7 @@ export default function Account() {
 
         {user.role !== "admin" && (
           <Box sx={styles.deleteBox}>
-            <Button
-              variant="contained"
-              color="error"
-              startIcon={<DeleteIcon />}
-              onClick={() => handleDelete(user.id_user)}
-            >
+            <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => handleDelete(user.id_user)}>
               Delete my account
             </Button>
           </Box>
@@ -89,9 +88,7 @@ export default function Account() {
 
         {user.role === "admin" && (
           <Box sx={styles.adminBox}>
-            <Typography variant="h5" align="center" gutterBottom>
-              All Users
-            </Typography>
+            <Typography variant="h5" align="center" gutterBottom>All Users</Typography>
 
             <Table sx={styles.table}>
               <TableHead>
@@ -105,7 +102,7 @@ export default function Account() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map((u) => (
+                {users.map(u => (
                   <TableRow key={u.id_user}>
                     <TableCell>{u.name}</TableCell>
                     <TableCell>{u.surname}</TableCell>
@@ -113,13 +110,7 @@ export default function Account() {
                     <TableCell>{u.role}</TableCell>
                     <TableCell>{u.id_user}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={() => handleDelete(u.id_user)}
-                      >
-                        Delete
-                      </Button>
+                      <Button variant="outlined" color="error" onClick={() => handleDelete(u.id_user)}>Delete</Button>
                     </TableCell>
                   </TableRow>
                 ))}
