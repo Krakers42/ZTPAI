@@ -124,14 +124,6 @@ export default function Photos() {
                       alt="user photo"
                     />
                   )}
-                  <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                      Uploaded on:{" "}
-                      {photo.created_at
-                        ? new Date(photo.created_at).toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric" })
-                        : "Unknown date"}
-                    </Typography>
-                  </CardContent>
                   <IconButton color="error" sx={styles.deleteButton} onClick={() => handleDelete(photo.id_photo)}>
                     <DeleteIcon />
                   </IconButton>
