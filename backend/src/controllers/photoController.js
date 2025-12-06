@@ -13,7 +13,12 @@ export const getPhotos = async (req, res) => {
       orderBy: { id_photo: "desc" },
     });
 
-    res.json(photos);
+    const formatted = photos.map(p => ({
+      ...p,
+      created_at: p.created_at ? new Date(p.created_at).toISOString() : new Date().toISOString(),
+    }));
+
+    res.json(formatted);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch photos" });
@@ -27,7 +32,6 @@ export const uploadPhoto = async (req, res) => {
 
     const filename = `${Date.now()}_${req.file.originalname}`;
     if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR);
-
     fs.writeFileSync(path.join(UPLOAD_DIR, filename), req.file.buffer);
 
     const photo = await prisma.photo.create({
@@ -37,7 +41,13 @@ export const uploadPhoto = async (req, res) => {
       },
     });
 
-    res.json({ success: true, photo });
+    const photoWithDate = {
+      ...photo,
+      created_at: photo.created_at ? new Date(photo.created_at).toISOString() : new Date().toISOString(),
+    };
+
+    res.json({ success: true, photo: photoWithDate });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to upload photo" });
