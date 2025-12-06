@@ -29,11 +29,12 @@ export default function Login() {
           <img src="/images/logo.svg" alt="Logo" style={styles.logo} />
 
           <Typography variant="h4" sx={styles.title}>LOGIN</Typography>
+          <Typography variant="h6" color="text.secondary">Welcome back!</Typography>
           <Typography sx={styles.errorMsg}>{msg}</Typography>
 
           <form onSubmit={submit} style={styles.form}>
-            <TextField fullWidth label="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <TextField fullWidth label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <TextField fullWidth label="Email" variant="outlined" sx={styles.textField} value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <TextField fullWidth label="Password" type="password" variant="outlined" sx={styles.textField} value={password} onChange={(e) => setPassword(e.target.value)} required />
 
             <Button fullWidth variant="contained" size="large" type="submit" sx={styles.submitButton}>
               CONTINUE
