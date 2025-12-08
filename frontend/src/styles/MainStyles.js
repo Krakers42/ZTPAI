@@ -1,4 +1,4 @@
-export default function useLoginStyles() {
+export default function useMainStyles() {
   return {
     container: {
       height: "100vh",
@@ -6,7 +6,7 @@ export default function useLoginStyles() {
       alignItems: "center",
       justifyContent: "center",
       background:
-        "linear-gradient(130deg, rgba(120,197,244,1) 25%, rgba(5,66,103,1) 75%)",
+        "linear-gradient(130deg, #78c5f4ff 25%, #054267ff 75%)",
     },
 
     paper: {
@@ -46,6 +46,7 @@ export default function useLoginStyles() {
       color: "#000000",
       textDecoration: "none",
       fontWeight: 550,
+      fontSize: "16px",
     },
 
     errorMsg: {
@@ -55,12 +56,16 @@ export default function useLoginStyles() {
 
     textField: {
       backgroundColor: "white",
-      borderRadius: "6px",
+      borderRadius: "10px",
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: "black",
+        fontWeight: 600,
+      },
       "& fieldset": {
-        borderColor: "#ddd",
+        borderColor: "#78c5f4ff",
       },
       "&:hover fieldset": {
-        borderColor: "#bbb",
+        borderColor: "#78c5f4ff",
       },
       "&.Mui-focused fieldset": {
         borderColor: "#0566a6",

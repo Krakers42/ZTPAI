@@ -75,32 +75,22 @@ export default function Register() {
               fullWidth
               label="Name"
               name="name"
+              variant="outlined"
               value={form.name}
               onChange={handleChange}
               required
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <i className="fa-solid fa-person"></i>
-                  </InputAdornment>
-                ),
-              }}
+              sx={styles.textField}
             />
 
             <TextField
               fullWidth
               label="Surname"
               name="surname"
+              variant="outlined"
               value={form.surname}
               onChange={handleChange}
               required
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <i className="fa-solid fa-person"></i>
-                  </InputAdornment>
-                ),
-              }}
+              sx={styles.textField}
             />
 
             <TextField
@@ -108,16 +98,11 @@ export default function Register() {
               label="Email"
               name="email"
               type="email"
+              variant="outlined"
               value={form.email}
               onChange={handleChange}
               required
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <i className="fa-solid fa-envelope"></i>
-                  </InputAdornment>
-                ),
-              }}
+              sx={styles.textField}
             />
 
             <TextField
@@ -125,16 +110,11 @@ export default function Register() {
               label="Password"
               name="password"
               type="password"
+              variant="outlined"
               value={form.password}
               onChange={handleChange}
               required
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <i className="fa-solid fa-door-open"></i>
-                  </InputAdornment>
-                ),
-              }}
+              sx={styles.textField}
             />
 
             <TextField
@@ -142,16 +122,11 @@ export default function Register() {
               label="Confirm Password"
               name="confirmPassword"
               type="password"
+              variant="outlined"
               value={form.confirmPassword}
               onChange={handleChange}
               required
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <i className="fa-solid fa-door-open"></i>
-                  </InputAdornment>
-                ),
-              }}
+              sx={styles.textField}
             />
 
             <TextField
@@ -159,16 +134,11 @@ export default function Register() {
               fullWidth
               label="Choose Role"
               name="role"
+              variant="outlined"
               value={form.role}
               onChange={handleChange}
               required
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <i className="fa-solid fa-user-shield"></i>
-                  </InputAdornment>
-                ),
-              }}
+              sx={styles.textField}
             >
               <MenuItem value="user">User</MenuItem>
               <MenuItem value="admin">Admin</MenuItem>

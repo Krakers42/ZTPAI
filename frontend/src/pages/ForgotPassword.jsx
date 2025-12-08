@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { TextField, Button, Typography, Box, Container, Paper } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
@@ -52,6 +53,7 @@ export default function ForgotPassword() {
               label="New password"
               type="password"
               value={password1}
+              sx={styles.textField}
               onChange={(e) => setPassword1(e.target.value)}
               required
             />
@@ -61,6 +63,7 @@ export default function ForgotPassword() {
               label="Confirm password"
               type="password"
               value={password2}
+              sx={styles.textField}
               onChange={(e) => setPassword2(e.target.value)}
               required
             />
@@ -86,13 +89,11 @@ export default function ForgotPassword() {
             </Typography>
           )}
 
-          <Button
-            onClick={() => navigate("/login")}
-            variant="text"
-            sx={{ mt: 2 }}
-          >
-            Back
-          </Button>
+          <Box sx={styles.linkBox}>
+            <Typography variant="body2">
+              <Link to="/login" style={styles.link}>Back</Link>
+            </Typography>
+          </Box>
         </Paper>
       </Container>
     </Box>
