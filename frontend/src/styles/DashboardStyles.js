@@ -1,17 +1,27 @@
+import { Padding } from "@mui/icons-material";
+
 export default function useDashboardStyles() {
   return {
+    
     title: {
-      mb: 5,
+      mt: 4,
+      mb: 4,
       fontFamily: "Roboto, sans-serif",
     },
+
     gridContainer: {
-      px: 3,
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+      gap: "24px",
       pb: 5,
+      padding: "0 24px",
     },
+    
     card: {
+      width: "100%",
+      aspectRatio: "1 / 1",
       borderRadius: 3,
       textAlign: "center",
-      height: 250,
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
@@ -24,6 +34,7 @@ export default function useDashboardStyles() {
         boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
       },
     },
+    
     cardValue: {
       mt: 1,
       color: "#333",

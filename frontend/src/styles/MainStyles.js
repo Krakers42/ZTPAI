@@ -5,8 +5,8 @@ export default function useMainStyles() {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background:
-        "linear-gradient(130deg, #78c5f4ff 25%, #054267ff 75%)",
+      background:"linear-gradient(130deg, #78c5f4ff 25%, #054267ff 75%)",
+      overflowY: "auto",
     },
 
     paper: {
@@ -18,6 +18,7 @@ export default function useMainStyles() {
       gap: 2,
       backgroundColor: "transparent",
       boxShadow: "none",
+      maxHeight: "100vh",
     },
 
     title: {

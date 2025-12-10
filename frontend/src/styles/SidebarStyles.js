@@ -1,15 +1,16 @@
 export default function useSidebarStyles() {
   return {
     hamburger: {
-      position: "absolute",
+      position: "fixed",
       top: 20,
       left: 20,
       fontSize: 40,
       color: "black",
-      zIndex: 1300,
+      zIndex: 2000,
       display: { xs: "block", sm: "none" },
     },
     drawer: {
+      zIndex: 1500,
       "& .MuiDrawer-paper": {
         width: { xs: "70%", sm: 280 },
         background: "linear-gradient(130deg, rgba(120,197,244,1) 25%, rgba(5,66,103,1) 75%)",
@@ -20,6 +21,7 @@ export default function useSidebarStyles() {
         flexDirection: "column",
         alignItems: "center",
         pt: 4,
+        zIndex: 1500,
       },
     },
     sidebar: {
@@ -38,9 +40,8 @@ export default function useSidebarStyles() {
       fontWeight: 800,
       mb: 3,
       textAlign: "center",
-      color: "white",
-      textShadow: "1px 1px 4px rgba(0,0,0,0.3)",
-      fontSize: "1.8rem",
+      color: "black",
+      fontSize: "2.5rem",
     },
     menuItem: {
       mx: 2,
@@ -56,18 +57,14 @@ export default function useSidebarStyles() {
       boxShadow: "2px 2px 5px rgba(0,0,0,0.4)",
     },
     menuItemIcon: { color: "black", minWidth: 40 },
-    logoutBox: { mt: "auto", mb: 2 },
-    logoutButton: {
-      color: "white",
-      fontSize: 20,
-      fontWeight: "bold",
-      "&:hover": { color: "#a1d3fd" },
+    logoutBox: { 
+      mt: "auto",
+      mb: 2, 
     },
-    logoutButtonDesktop: {
-      color: "white",
+    logoutButton: {
+      color: "black",
       fontSize: 20,
       fontWeight: "bold",
-      mb: 2,
       "&:hover": { color: "#a1d3fd" },
     },
   };

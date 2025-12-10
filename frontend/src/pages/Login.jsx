@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Box, Button, Container, TextField, Typography, Paper } from "@mui/material";
+import { 
+  Box, 
+  Button,
+  Container, 
+  TextField, 
+  Typography, 
+  Paper, 
+} from "@mui/material";
 import useMainStyles from "../styles/MainStyles.js";
 import { login } from "../services/authService.js";
 
@@ -33,8 +40,26 @@ export default function Login() {
           <Typography sx={styles.errorMsg}>{msg}</Typography>
 
           <form onSubmit={submit} style={styles.form}>
-            <TextField fullWidth label="Email" variant="outlined" sx={styles.textField} value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <TextField fullWidth label="Password" type="password" variant="outlined" sx={styles.textField} value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              sx={styles.textField}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              variant="outlined"
+              sx={styles.textField}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
             <Button fullWidth variant="contained" size="large" type="submit" sx={styles.submitButton}>
               CONTINUE

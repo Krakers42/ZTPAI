@@ -7,6 +7,7 @@ import {
   Grid,
   IconButton,
   Button,
+  Box,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -32,58 +33,52 @@ export default function Bikes() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <BikesLayout />
-      <main style={styles.main}>
-        <Typography variant="h4" align="center" gutterBottom>
-          BIKES
-        </Typography>
+    <BikesLayout>
+      <Typography variant="h4" align="center" sx={styles.title}>
+        BIKES
+      </Typography>
 
-        <Grid container spacing={3}>
-          {bikes.length ? (
-            bikes.map((bike) => (
-              <Grid item xs={12} md={6} lg={4} key={bike.id_bike_card}>
-                <Card sx={styles.card}>
-                  {bike.photo_path && (
-                    <CardMedia
-                      component="img"
-                      sx={styles.cardMedia}
-                      image={`${import.meta.env.VITE_API_URL}/uploads/${bike.photo_path}`}
-                      alt={bike.name}
-                    />
-                  )}
-                  <CardContent>
-                    <Typography variant="h6">{bike.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {bike.description}
-                    </Typography>
-                  </CardContent>
+      <Box sx={styles.gridContainer}>
+        {bikes.length ? (
+          bikes.map((bike) => (
+            <Card key={bike.id_bike_card} sx={styles.card}>
+              {bike.photo_path && (
+                <CardMedia
+                  component="img"
+                  sx={styles.cardMedia}
+                  image={`${import.meta.env.VITE_API_URL}/uploads/${bike.photo_path}`}
+                  alt={bike.name}
+                />
+              )}
+              <CardContent>
+                <Typography variant="h6" align="center" >{bike.name}</Typography>
+                <Typography variant="body2" align="center" color="text.secondary">
+                  {bike.description}
+                </Typography>
+              </CardContent>
+              <IconButton
+                color="error"
+                sx={styles.deleteButton}
+                onClick={() => handleDelete(bike.id_bike_card)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Card>
+          ))
+        ) : (
+          <Typography sx={styles.noBikesText}>NO BIKES AVAILABLE</Typography>
+        )}
+      </Box>
 
-                  <IconButton
-                    color="error"
-                    sx={styles.deleteButton}
-                    onClick={() => handleDelete(bike.id_bike_card)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Card>
-              </Grid>
-            ))
-          ) : (
-            <Typography sx={styles.noBikesText}>NO BIKES AVAILABLE</Typography>
-          )}
-        </Grid>
-
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          sx={styles.addButton}
-          onClick={() => (window.location.href = "/add-bike")}
-        >
-          Add Bike
-        </Button>
-      </main>
-    </div>
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<AddIcon />}
+        sx={styles.addButton}
+        onClick={() => (window.location.href = "/add-bike")}
+      >
+        Add Bike
+      </Button>
+    </BikesLayout>
   );
 }

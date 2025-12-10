@@ -67,7 +67,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Hamburger for mobile */}
-      <IconButton onClick={toggleDrawer(true)} sx={styles.hamburger}>
+      <IconButton onClick={() => setOpen(prev => !prev)} sx={styles.hamburger}>
         <MenuIcon fontSize="inherit" />
       </IconButton>
 
@@ -86,7 +86,7 @@ export default function Sidebar() {
       <Box sx={styles.sidebar}>
         <Typography sx={styles.logo}>Bike Base</Typography>
         <List sx={{ width: "100%", flexGrow: 1 }}>{renderMenuItems()}</List>
-        <Button startIcon={<LogoutIcon />} onClick={handleLogout} sx={styles.logoutButtonDesktop}>
+        <Button startIcon={<LogoutIcon />} onClick={handleLogout} sx={styles.logoutButton}>
           Logout
         </Button>
       </Box>

@@ -65,20 +65,18 @@ export default function Dashboard() {
         DASHBOARD
       </Typography>
 
-      <Grid container spacing={3} justifyContent="center" sx={styles.gridContainer}>
+      <Box sx={styles.gridContainer}>
         {cards.map((card) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={card.label}>
-            <Card sx={styles.card}>
-              <CardContent>
-                <Typography variant="h6">{card.label}:</Typography>
-                <Typography variant="h4" fontWeight="bold" sx={styles.cardValue}>
-                  {card.value}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          <Card key={card.label} sx={styles.card}>
+            <CardContent>
+              <Typography variant="h4">{card.label}:</Typography>
+              <Typography variant="h4" fontWeight="bold" sx={styles.cardValue}>
+                {card.value}
+              </Typography>
+            </CardContent>
+          </Card>
         ))}
-      </Grid>
+      </Box>
     </DashboardLayout>
   );
 }
