@@ -35,7 +35,7 @@ export default function AddBike() {
     e.preventDefault();
     try {
       await addBike({ name: title, description, file });
-      window.location.href = "/bikes"; // Można później zamienić na navigate
+      window.location.href = "/bikes";
     } catch (err) {
       console.error(err);
       alert("Failed to add bike");
@@ -43,17 +43,40 @@ export default function AddBike() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <AddBikesLayout />
-      <main style={styles.main}>
+    <AddBikesLayout>
+
+      <Typography variant="h4" align="center" sx={styles.title}>
+        ADD NEW BIKE
+      </Typography>
+
+      <Box sx={styles.formWrapper}>
+
         <Paper sx={styles.paper}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Add New Bike
+
+          <Typography variant="h6" align="center" gutterBottom>
+            Fill in the details
           </Typography>
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-            <TextField label="Description" multiline rows={4} value={description} onChange={(e) => setDescription(e.target.value)} required />
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            <TextField
+              label="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+
+            <TextField
+              label="Description"
+              multiline
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
 
             <Box
               onDrop={handleDrop}
@@ -65,6 +88,7 @@ export default function AddBike() {
               <Typography variant="body2" color="textSecondary">
                 Drag & Drop image here or click to select
               </Typography>
+
               <input
                 id="fileInput"
                 hidden
@@ -74,14 +98,23 @@ export default function AddBike() {
               />
             </Box>
 
-            {preview && <Box component="img" src={preview} alt="preview" sx={styles.preview} className="fadeInZoom" />}
+            {preview && (
+              <Box
+                component="img"
+                src={preview}
+                alt="preview"
+                sx={styles.preview}
+                className="fadeInZoom"
+              />
+            )}
 
             <Button variant="contained" color="primary" type="submit">
               SEND
             </Button>
           </Box>
         </Paper>
-      </main>
-    </div>
+      </Box>
+
+    </AddBikesLayout>
   );
 }

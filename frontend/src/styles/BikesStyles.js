@@ -5,7 +5,6 @@ export default function useBikesStyles() {
     title: {
       mt: 4,
       mb: 4,
-      fontFamily: "Roboto, sans-serif",
     },
 
     gridContainer: {

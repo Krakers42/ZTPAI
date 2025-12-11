@@ -1,47 +1,80 @@
 export default function useGearPartsStyles() {
   return {
     main: {
-      padding: "2rem",
-      animation: "fadeInZoom 0.3s ease",
+      flex: 1,
+      padding: "0 24px",
+      boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      overflowY: "auto",
     },
 
     title: {
-      fontSize: "2rem",
-      fontWeight: 700,
-      marginBottom: "1.5rem",
-      color: "#0d47a1",
-      textAlign: "left",
+      mt: 4,
+      mb: 4,
+      textAlign: "center",
     },
 
-    formRow: {
+    formWrapper: {
+      width: "100%",
+      maxWidth: "1000px",
       display: "flex",
-      gap: "1rem",
-      marginBottom: "1.5rem",
       flexWrap: "wrap",
+      gap: "1rem",
+      mb: 4,
+      alignItems: "flex-end",
+      backgroundColor: "#fff",
+      padding: "20px",
+      borderRadius: 1.5,
+      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
     },
 
-    table: {
-      backgroundColor: "white",
-      borderRadius: "12px",
+    tableWrapper: {
+      width: "100%",
+      maxWidth: "1000px",
+      backgroundColor: "#fff",
+      borderRadius: 1.5,
       boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
       overflow: "hidden",
     },
 
     tableHeaderCell: {
       fontWeight: "bold",
-      backgroundColor: "rgba(25,118,210,0.2)",
+      backgroundColor: "rgba(7, 116, 224, 0.35)",
     },
 
     actionButtons: {
       display: "flex",
+      flexDirection: "column",
       gap: "0.5rem",
     },
 
-    dialogContent: {
+    formButtonWrapper: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "center",
+    },
+    
+    dialogTitle: {
+      textAlign: "center",
+      width: "100%",
+      mb: 1,
+      mt: 1,
+    },
+
+    dialogContentBox: {
       display: "flex",
       flexDirection: "column",
-      gap: "1rem",
-      minWidth: "300px",
+      gap: 2,
+      mt: 1,
+      alignItems: "center",
+      textAlign: "center",
+      width: "100%",
+    },
+
+    textField: {
+      width: "100%",
     },
   };
 }
