@@ -1,28 +1,83 @@
 export default function useTripsStyles() {
   return {
-    container: {
-      p: 4,
-      minHeight: "100vh",
-      backgroundColor: "#f9f9f9",
-      color: "#222",
-      fontSize: "1rem",
+    main: {
+      flex: 1,
+      padding: "0 24px",
+      boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      overflowY: "auto",
     },
-    formPaper: {
-      p: 2,
-      mb: 3,
+
+    title: {
+      mt: 4,
+      mb: 4,
+      textAlign: "center",
     },
-    tablePaper: {
-      p: 2,
-      mb: 3,
+
+    formWrapper: {
+      width: "100%",
+      maxWidth: "1000px",
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "1rem",
+      mb: 4,
+      alignItems: "flex-end",
+      backgroundColor: "#fff",
+      padding: "20px",
+      borderRadius: 1.5,
+      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
     },
-    actionsButton: {
-      marginRight: 1,
+
+    formButtonWrapper: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "center",
+      mt: 2,
     },
-    dialogContent: {
-      minWidth: 360,
+
+    tableWrapper: {
+      width: "100%",
+      maxWidth: "1000px",
+      backgroundColor: "#fff",
+      borderRadius: 1.5,
+      boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
+      overflow: "hidden",
+      mb: 4,
     },
-    stackSpacing: {
+
+    tableHeaderCell: {
+      fontWeight: "bold",
+      backgroundColor: "rgba(7, 116, 224, 0.35)",
+    },
+
+    dialogTitle: {
+      textAlign: "center",
+      width: "100%",
+      mb: 1,
       mt: 1,
+    },
+
+    dialogContentBox: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+      mt: 1,
+      alignItems: "center",
+      textAlign: "center",
+      width: "100%",
+      minWidth: "280px",
+    },
+
+    textField: {
+      width: "100%",
+    },
+
+    actionButtons: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "0.5rem",
     },
   };
 }

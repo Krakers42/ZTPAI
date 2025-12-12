@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import {
   Box, Typography, TextField, Button, Table, TableHead, TableBody,
-  TableRow, TableCell, Dialog, DialogTitle, DialogContent, DialogActions,
-  Paper, Stack
+  TableRow, TableCell, Dialog, DialogTitle, DialogContent, DialogActions
 } from "@mui/material";
+
 import TripsLayout from "../components/layouts/PageLayout.jsx";
 import useTripsStyles from "../styles/TripsStyles.js";
-
 import { getTrips, addTrip, updateTrip, deleteTrip } from "../services/tripsService.js";
 
 export default function Trips() {
+  const styles = useTripsStyles();
+
   const [trips, setTrips] = useState([]);
   const [form, setForm] = useState({ date: "", time: "", distance: "", elevation: "", description: "" });
   const [editTrip, setEditTrip] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const styles = useTripsStyles();
 
   useEffect(() => {
     setLoading(true);
@@ -61,40 +60,64 @@ export default function Trips() {
 
   return (
     <TripsLayout>
-      <Box sx={styles.container}>
-        <Typography variant="h4" align="center" gutterBottom>TRIPS</Typography>
+      <Box sx={styles.main}>
+        <Typography variant="h4" sx={styles.title}>TRIPS</Typography>
 
         {/* Form */}
-        <Paper sx={styles.formPaper}>
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
-            <TextField
-              label="Date"
-              type="date"
-              InputLabelProps={{ shrink: true }}
-              value={form.date}
-              onChange={e => setForm({ ...form, date: e.target.value })}
-              required
-            />
-            <TextField label="Time" type="time" InputLabelProps={{ shrink: true }} value={form.time} onChange={e => setForm({ ...form, time: e.target.value })} />
-            <TextField label="Distance (m)" type="number" value={form.distance} onChange={e => setForm({ ...form, distance: e.target.value })} />
-            <TextField label="Elevation (m)" type="number" value={form.elevation} onChange={e => setForm({ ...form, elevation: e.target.value })} />
-            <TextField label="Description" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
-            <Button variant="contained" onClick={handleAdd}>Add trip</Button>
-          </Stack>
-        </Paper>
+        <Box sx={styles.formWrapper}>
+          <TextField
+            label="Date"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={form.date}
+            onChange={e => setForm({ ...form, date: e.target.value })}
+            sx={styles.textField}
+          />
+          <TextField
+            label="Time"
+            type="time"
+            InputLabelProps={{ shrink: true }}
+            value={form.time}
+            onChange={e => setForm({ ...form, time: e.target.value })}
+            sx={styles.textField}
+          />
+          <TextField
+            label="Distance (km)"
+            type="number"
+            value={form.distance}
+            onChange={e => setForm({ ...form, distance: e.target.value })}
+            sx={styles.textField}
+          />
+          <TextField
+            label="Elevation (m)"
+            type="number"
+            value={form.elevation}
+            onChange={e => setForm({ ...form, elevation: e.target.value })}
+            sx={styles.textField}
+          />
+          <TextField
+            label="Description"
+            value={form.description}
+            onChange={e => setForm({ ...form, description: e.target.value })}
+            sx={styles.textField}
+          />
+          <Box sx={styles.formButtonWrapper}>
+            <Button variant="contained" onClick={handleAdd}>Add Trip</Button>
+          </Box>
+        </Box>
 
         {/* Table */}
-        <Paper sx={styles.tablePaper}>
+        <Box sx={styles.tableWrapper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell>Time</TableCell>
-                <TableCell>Distance</TableCell>
-                <TableCell>Elevation</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell sx={styles.tableHeaderCell}>ID</TableCell>
+                <TableCell sx={styles.tableHeaderCell}>Date</TableCell>
+                <TableCell sx={styles.tableHeaderCell}>Time</TableCell>
+                <TableCell sx={styles.tableHeaderCell}>Distance</TableCell>
+                <TableCell sx={styles.tableHeaderCell}>Elevation</TableCell>
+                <TableCell sx={styles.tableHeaderCell}>Description</TableCell>
+                <TableCell sx={styles.tableHeaderCell}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -111,32 +134,66 @@ export default function Trips() {
                   <TableCell>{trip.elevation ?? ""}</TableCell>
                   <TableCell>{trip.description ?? ""}</TableCell>
                   <TableCell>
-                    <Button size="small" onClick={() => openEdit(trip)}>Edit</Button>
-                    <Button size="small" color="error" onClick={() => handleDelete(trip.id_trip)}>Delete</Button>
+                    <Box sx={styles.actionButtons}>
+                      <Button variant="outlined" onClick={() => openEdit(trip)}>Edit</Button>
+                      <Button variant="outlined" color="secondary" onClick={() => handleDelete(trip.id_trip)}>Delete</Button>
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </Paper>
+        </Box>
 
-        {/* Edit dialog */}
-        <Dialog open={!!editTrip} onClose={() => setEditTrip(null)}>
-          <DialogTitle>Edit trip</DialogTitle>
-          <DialogContent sx={styles.dialogContent}>
-            <Stack spacing={2}>
-              <TextField label="Date" type="date" InputLabelProps={{ shrink: true }} value={editTrip?.date || ""} onChange={e => setEditTrip(prev => prev ? { ...prev, date: e.target.value } : null)} />
-              <TextField label="Time" type="time" InputLabelProps={{ shrink: true }} value={editTrip?.time || ""} onChange={e => setEditTrip(prev => prev ? { ...prev, time: e.target.value } : null)} />
-              <TextField label="Distance (m)" type="number" value={editTrip?.distance ?? ""} onChange={e => setEditTrip(prev => prev ? { ...prev, distance: e.target.value } : null)} />
-              <TextField label="Elevation (m)" type="number" value={editTrip?.elevation ?? ""} onChange={e => setEditTrip(prev => prev ? { ...prev, elevation: e.target.value } : null)} />
-              <TextField label="Description" value={editTrip?.description ?? ""} onChange={e => setEditTrip(prev => prev ? { ...prev, description: e.target.value } : null)} />
-            </Stack>
+        {/* Edit Dialog */}
+        <Dialog open={!!editTrip} onClose={() => setEditTrip(null)} fullWidth maxWidth="sm">
+          <DialogTitle sx={styles.dialogTitle}>Edit Trip</DialogTitle>
+          <DialogContent>
+            <Box sx={styles.dialogContentBox}>
+              <TextField
+                label="Date"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                value={editTrip?.date || ""}
+                onChange={e => setEditTrip(prev => prev ? { ...prev, date: e.target.value } : null)}
+                sx={styles.textField}
+              />
+              <TextField
+                label="Time"
+                type="time"
+                InputLabelProps={{ shrink: true }}
+                value={editTrip?.time || ""}
+                onChange={e => setEditTrip(prev => prev ? { ...prev, time: e.target.value } : null)}
+                sx={styles.textField}
+              />
+              <TextField
+                label="Distance (m)"
+                type="number"
+                value={editTrip?.distance ?? ""}
+                onChange={e => setEditTrip(prev => prev ? { ...prev, distance: e.target.value } : null)}
+                sx={styles.textField}
+              />
+              <TextField
+                label="Elevation (m)"
+                type="number"
+                value={editTrip?.elevation ?? ""}
+                onChange={e => setEditTrip(prev => prev ? { ...prev, elevation: e.target.value } : null)}
+                sx={styles.textField}
+              />
+              <TextField
+                label="Description"
+                value={editTrip?.description ?? ""}
+                onChange={e => setEditTrip(prev => prev ? { ...prev, description: e.target.value } : null)}
+                sx={styles.textField}
+              />
+            </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setEditTrip(null)}>Cancel</Button>
             <Button variant="contained" onClick={handleEditSave}>Save changes</Button>
           </DialogActions>
         </Dialog>
+
       </Box>
     </TripsLayout>
   );

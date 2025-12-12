@@ -8,6 +8,7 @@ export default function useGearPartsStyles() {
       flexDirection: "column",
       alignItems: "center",
       overflowY: "auto",
+      mb: 3,
     },
 
     title: {
