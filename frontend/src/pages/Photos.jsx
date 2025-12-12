@@ -1,15 +1,26 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  Card, CardMedia, CardContent, Typography,
-  Grid, IconButton, Button, Box, Paper
+  Card,
+  CardMedia,
+  Typography,
+  Grid,
+  IconButton,
+  Button,
+  Box,
+  Paper
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+
 import PhotosLayout from "../components/layouts/PageLayout.jsx";
 import usePhotosStyles from "../styles/PhotosStyles.js";
 import "../animations/fadeInZoom.css";
 
-import { getPhotos, uploadPhoto, deletePhoto } from "../services/photosService.js";
+import {
+  getPhotos,
+  uploadPhoto,
+  deletePhoto
+} from "../services/photosService.js";
 
 export default function Photos() {
   const [photos, setPhotos] = useState([]);
@@ -71,13 +82,13 @@ export default function Photos() {
     e.preventDefault();
     setIsDragging(true);
   };
+
   const handleDragLeave = () => setIsDragging(false);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <PhotosLayout />
-      <main style={styles.main}>
-        <Typography variant="h4" align="center" gutterBottom>
+    <PhotosLayout>
+      <Box sx={styles.grid}>
+        <Typography variant="h4" align="center" sx={styles.title}>
           PHOTOS
         </Typography>
 
@@ -92,6 +103,7 @@ export default function Photos() {
           <Typography variant="body2" color="textSecondary">
             Drag & Drop photo here or click to select
           </Typography>
+
           <input
             id="photoUploadInput"
             hidden
@@ -103,15 +115,29 @@ export default function Photos() {
 
         {preview && (
           <Box sx={styles.previewBox}>
-            <Typography variant="subtitle1" gutterBottom>Preview</Typography>
-            <Box component="img" src={preview} alt="preview" sx={styles.previewImage} />
-            <Button variant="contained" color="primary" sx={styles.uploadButton} onClick={handleUpload}>
+            <Typography variant="h4" gutterBottom>
+              Preview
+            </Typography>
+
+            <Box
+              component="img"
+              src={preview}
+              alt="preview"
+              sx={styles.previewImage}
+            />
+
+            <Button
+              variant="contained"
+              color="primary"
+              sx={styles.uploadButton}
+              onClick={handleUpload}
+            >
               Upload Photo
             </Button>
           </Box>
         )}
 
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={styles.gridContainer}>
           {photos.length ? (
             photos.map((photo) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={photo.id_photo}>
@@ -124,25 +150,24 @@ export default function Photos() {
                       alt="user photo"
                     />
                   )}
-                  <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                      Uploaded on:{" "}
-                      {photo.created_at
-                        ? new Date(photo.created_at).toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric" })
-                        : "Unknown date"}
-                    </Typography>
-                  </CardContent>
-                  <IconButton color="error" sx={styles.deleteButton} onClick={() => handleDelete(photo.id_photo)}>
+
+                  <IconButton
+                    color="error"
+                    sx={styles.deleteButton}
+                    onClick={() => handleDelete(photo.id_photo)}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </Card>
               </Grid>
             ))
           ) : (
-            <Typography sx={styles.noPhotosText}>No photos available</Typography>
+            <Typography sx={styles.noPhotosText}>
+              No photos available
+            </Typography>
           )}
         </Grid>
-      </main>
-    </Box>
+      </Box>
+    </PhotosLayout>
   );
 }
