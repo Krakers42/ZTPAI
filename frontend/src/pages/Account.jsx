@@ -11,10 +11,15 @@ import {
   TableBody,
   Box,
 } from "@mui/material";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import AccountLayout from "../components/layouts/PageLayout.jsx";
 import { styles } from "../styles/AccountStyles.js";
-import { getCurrentUser, getAllUsers, deleteUser } from "../services/accountService.js";
+import {
+  getCurrentUser,
+  getAllUsers,
+  deleteUser,
+} from "../services/accountService.js";
 
 export default function Account() {
   const [user, setUser] = useState(null);
@@ -22,23 +27,23 @@ export default function Account() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const load = async () => {
       try {
         const me = await getCurrentUser();
         setUser(me);
 
         if (me.role === "admin") {
-          const allUsers = await getAllUsers();
-          setUsers(allUsers);
+          const all = await getAllUsers();
+          setUsers(all);
         }
       } catch (err) {
-        console.error("Error fetching users:", err);
+        console.error("Error fetching users", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    load();
   }, []);
 
   const handleDelete = async (id) => {
@@ -50,24 +55,26 @@ export default function Account() {
       if (res.logout) {
         window.location.href = "/login";
       } else {
-        setUsers(prev => prev.filter(u => u.id_user !== id));
+        setUsers((prev) => prev.filter((u) => u.id_user !== id));
         if (user.id_user === id) setUser(null);
       }
     } catch (err) {
-      console.error("Error deleting user:", err);
+      console.error("Delete error:", err);
       alert("Delete failed");
     }
   };
 
   if (loading) return <Typography>Loading...</Typography>;
-  if (!user) return <Typography>Error loading user data.</Typography>;
+  if (!user) return <Typography>Error loading account.</Typography>;
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AccountLayout />
-      <Box component="main" sx={{ ...styles.main, backgroundColor: "#f5f5f5", color: "#333", fontSize: "16px" }}>
-        <Typography variant="h4" align="center" gutterBottom>ACCOUNT</Typography>
+    <AccountLayout>
+      <Box sx={styles.main}>
+        <Typography variant="h4" align="center" sx={styles.title}>
+          ACCOUNT
+        </Typography>
 
+        {/* User card */}
         <Card sx={styles.card}>
           <CardContent>
             <Typography variant="h6">Name: {user.name}</Typography>
@@ -78,31 +85,40 @@ export default function Account() {
           </CardContent>
         </Card>
 
+        {/* Delete own account */}
         {user.role !== "admin" && (
           <Box sx={styles.deleteBox}>
-            <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => handleDelete(user.id_user)}>
+            <Button
+              variant="contained"
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={() => handleDelete(user.id_user)}
+            >
               Delete my account
             </Button>
           </Box>
         )}
 
+        {/* Admin users table */}
         {user.role === "admin" && (
           <Box sx={styles.adminBox}>
-            <Typography variant="h5" align="center" gutterBottom>All Users</Typography>
+            <Typography variant="h5" align="center" gutterBottom>
+              All Users
+            </Typography>
 
             <Table sx={styles.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell><b>Name</b></TableCell>
-                  <TableCell><b>Surname</b></TableCell>
-                  <TableCell><b>Email</b></TableCell>
-                  <TableCell><b>Role</b></TableCell>
-                  <TableCell><b>ID</b></TableCell>
-                  <TableCell><b>Actions</b></TableCell>
+                  <TableCell sx={styles.tableHeaderCell}>Name</TableCell>
+                  <TableCell sx={styles.tableHeaderCell}>Surname</TableCell>
+                  <TableCell sx={styles.tableHeaderCell}>Email</TableCell>
+                  <TableCell sx={styles.tableHeaderCell}>Role</TableCell>
+                  <TableCell sx={styles.tableHeaderCell}>ID</TableCell>
+                  <TableCell sx={styles.tableHeaderCell}>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map(u => (
+                {users.map((u) => (
                   <TableRow key={u.id_user}>
                     <TableCell>{u.name}</TableCell>
                     <TableCell>{u.surname}</TableCell>
@@ -110,7 +126,14 @@ export default function Account() {
                     <TableCell>{u.role}</TableCell>
                     <TableCell>{u.id_user}</TableCell>
                     <TableCell>
-                      <Button variant="outlined" color="error" onClick={() => handleDelete(u.id_user)}>Delete</Button>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        onClick={() => handleDelete(u.id_user)}
+                      >
+                        Delete
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -119,6 +142,6 @@ export default function Account() {
           </Box>
         )}
       </Box>
-    </Box>
+    </AccountLayout>
   );
 }

@@ -1,29 +1,51 @@
 export const styles = {
   main: {
     flex: 1,
-    padding: "30px",
-    transition: "all 0.3s ease-in-out",
+    padding: "24px",
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    overflowY: "auto",
+    minHeight: "100vh",
   },
+
+  title: {
+    mt: 4,
+    mb: 4,
+    textAlign: "center",
+  },
+
   card: {
-    maxWidth: 500,
-    margin: "0 auto",
-    borderRadius: 3,
-    boxShadow: 3,
+    width: "100%",
+    maxWidth: "400px",
+    borderRadius: 2,
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
     backgroundColor: "white",
   },
+
   deleteBox: {
+    marginTop: "20px",
     display: "flex",
     justifyContent: "center",
-    marginTop: "16px",
   },
+
   adminBox: {
-    marginTop: "32px",
+    width: "100%",
+    maxWidth: "900px",
+    marginTop: "40px",
   },
+
   table: {
-    maxWidth: 800,
-    margin: "0 auto",
+    width: "100%",
     backgroundColor: "white",
     borderRadius: 2,
-    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+    boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
+    overflow: "hidden",
   },
+
+  tableHeaderCell: {
+      fontWeight: "bold",
+      backgroundColor: "rgba(7, 116, 224, 0.35)",
+    },
 };
