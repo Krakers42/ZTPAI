@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
-const JWT_EXPIRES = 60 * 60 * 24 * 7; // 7 dni
+const JWT_EXPIRES = 60 * 30; // 30 minut
 
 function sendToken(res, user) {
   const payload = { id_user: user.id_user, role: user.user_details?.role || 'user' };
