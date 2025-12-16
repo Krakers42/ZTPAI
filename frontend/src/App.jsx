@@ -12,6 +12,8 @@ import GearParts from "./pages/GearParts.jsx";
 import Trips from "./pages/Trips.jsx";
 import Photos from "./pages/Photos.jsx";
 import Account from "./pages/Account.jsx";
+import RequireGuest from "./components/auth/RequireGuest.jsx";
+import RequireAuth from "./components/auth/RequireAuth.jsx";
 
 function App() {
   const location = useLocation();
@@ -36,20 +38,29 @@ function App() {
 
   return (
     <Routes>
-      <Route index element={<Login />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/bikes" element={<Bikes />} />
-      <Route path="/bikes/:id" element={<BikeDetail />} />
-      <Route path="/add-bike" element={<BikeDetail />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/sidebar" element={<Sidebar />} />
-      <Route path="/page-layout" element={<PageLayout />} />
-      <Route path="/gear-parts" element={<GearParts />} />
-      <Route path="/trips" element={<Trips />} />
-      <Route path="/photos" element={<Photos />} />
-      <Route path="/account" element={<Account />} />
+
+      {/* PUBLIC */}
+      <Route element={<RequireGuest />}>
+        <Route index element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+      </Route>
+
+      {/* PROTECTED */}
+      <Route element={<RequireAuth />}>
+        <Route path="/bikes" element={<Bikes />} />
+        <Route path="/bikes/:id" element={<BikeDetail />} />
+        <Route path="/add-bike" element={<BikeDetail />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/sidebar" element={<Sidebar />} />
+        <Route path="/page-layout" element={<PageLayout />} />
+        <Route path="/gear-parts" element={<GearParts />} />
+        <Route path="/trips" element={<Trips />} />
+        <Route path="/photos" element={<Photos />} />
+        <Route path="/account" element={<Account />} />
+      </Route>
+
     </Routes>
   );
 }

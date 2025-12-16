@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import useMainStyles from "../styles/MainStyles.js";
 import { login } from "../services/authService.js";
+import useAuth from "../context/useAuth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,17 +18,22 @@ export default function Login() {
   const [msg, setMsg] = useState("");
   const nav = useNavigate();
   const styles = useMainStyles();
+  const { setUser } = useAuth();
 
   const submit = async (e) => {
-    e.preventDefault();
-    try {
-      await login(email, password);
-      setMsg("Logged in!");
-      nav("/dashboard");
-    } catch (err) {
-      setMsg(err.response?.data?.error || "Connection error");
-    }
-  };
+  e.preventDefault();
+  setMsg("");
+
+  try {
+    const res = await login(email, password);
+
+    setUser(res.data.user);
+
+    nav("/dashboard", { replace: true });
+  } catch (err) {
+    setMsg(err.response?.data?.error || "Connection error");
+  }
+};
 
   return (
     <Box sx={styles.container}>

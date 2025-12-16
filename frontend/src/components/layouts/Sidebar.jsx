@@ -23,21 +23,25 @@ import {
 } from "@mui/icons-material";
 import useSidebarStyles from "../../styles/SidebarStyles.js";
 import { logout } from "../../services/authService.js";
+import useAuth from "../../context/useAuth";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const styles = useSidebarStyles();
 
+   const { setUser } = useAuth(); 
+
   const toggleDrawer = (state) => () => setOpen(state);
 
   const handleLogout = async () => {
     try {
-      await logout();
-      localStorage.removeItem("token");
-      navigate("/login");
+      await logout();                      
     } catch (err) {
       console.error("Logout failed:", err);
+    } finally {
+      setUser(null);                         
+      navigate("/login", { replace: true });
     }
   };
 
