@@ -35,8 +35,8 @@ export default function Photos() {
       try {
         const data = await getPhotos();
         setPhotos(data);
-      } catch (err) {
-        console.error(err);
+      } catch {
+        alert("An error occured while downloading photos.");
       }
     };
     fetchPhotos();
@@ -47,8 +47,8 @@ export default function Photos() {
     try {
       await deletePhoto(id);
       setPhotos((prev) => prev.filter((p) => p.id_photo !== id));
-    } catch (err) {
-      console.error(err);
+    } catch {
+      alert("An error occured while deleting this photo.");
     }
   };
 
@@ -64,8 +64,7 @@ export default function Photos() {
       setPhotos((prev) => [res.photo, ...prev]);
       setFile(null);
       setPreview(null);
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("Failed to upload photo");
     }
   };

@@ -8,7 +8,6 @@ import {
   Typography,
   Paper,
   MenuItem,
-  InputAdornment,
 } from "@mui/material";
 import useMainStyles from "../styles/MainStyles.js";
 import { registerUser } from "../services/authService.js";

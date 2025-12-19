@@ -36,8 +36,8 @@ export default function Account() {
           const all = await getAllUsers();
           setUsers(all);
         }
-      } catch (err) {
-        console.error("Error fetching users", err);
+      } catch {
+        alert("Error fetching users");
       } finally {
         setLoading(false);
       }
@@ -58,8 +58,7 @@ export default function Account() {
         setUsers((prev) => prev.filter((u) => u.id_user !== id));
         if (user.id_user === id) setUser(null);
       }
-    } catch (err) {
-      console.error("Delete error:", err);
+    } catch {
       alert("Delete failed");
     }
   };
@@ -85,7 +84,7 @@ export default function Account() {
           </CardContent>
         </Card>
 
-        {/* Delete own account */}
+        {/* Delete your own account */}
         {user.role !== "admin" && (
           <Box sx={styles.deleteBox}>
             <Button

@@ -7,10 +7,7 @@ const PageLayout = ({ children }) => {
 
   return (
     <Box sx={styles.container}>
-      {/* Sidebar */}
         <Sidebar />
-
-      {/* Main content */}
       <Box component="main" sx={styles.main}>
         {children}
       </Box>

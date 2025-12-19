@@ -20,7 +20,9 @@ export default function Trips() {
     setLoading(true);
     getTrips()
       .then(setTrips)
-      .catch(console.error)
+      .catch(() => {
+        alert("Failed to load trips");
+      })
       .finally(() => setLoading(false));
   }, []);
 

@@ -7,8 +7,6 @@ import App from "./App.jsx";
 import theme from "./styles/theme.js";
 import AuthProvider from "./context/AuthProvider";
 
-console.log("main.jsx loaded");
-
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 axios.defaults.withCredentials = true;
 

@@ -36,8 +36,7 @@ export default function AddBike() {
     try {
       await addBike({ name: title, description, file });
       window.location.href = "/bikes";
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("Failed to add bike");
     }
   };

@@ -1,5 +1,3 @@
-import { CardContent } from "@mui/material";
-
 export default function useBikesStyles() {
   return {
     title: {

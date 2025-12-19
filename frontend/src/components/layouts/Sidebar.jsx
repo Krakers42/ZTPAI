@@ -30,7 +30,7 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const styles = useSidebarStyles();
 
-   const { setUser } = useAuth(); 
+  const { setUser } = useAuth(); 
 
   const toggleDrawer = (state) => () => setOpen(state);
 

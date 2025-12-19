@@ -25,11 +25,9 @@ export default function ForgotPassword() {
     try {
       await resetPassword(token, password1);
       setMessage("Password successfully changed!");
-
       setTimeout(() => navigate("/login"), 1500);
-    } catch (error) {
-      console.error(error);
-      setMessage(error.response?.data?.error || "An error occurred.");
+    } catch {
+      setMessage("An error occurred while resetting the password.");
     }
   };
 

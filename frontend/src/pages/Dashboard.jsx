@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Typography,
-  Grid,
   Card,
   CardContent,
   CircularProgress,
@@ -22,8 +21,8 @@ export default function Dashboard() {
       try {
         const response = await getDashboardStats();
         setStats(response.data);
-      } catch (error) {
-        console.error("Dashboard load error:", error);
+      } catch {
+        alert("Error loading Dashboard");
         setStats(null);
       } finally {
         setLoading(false);

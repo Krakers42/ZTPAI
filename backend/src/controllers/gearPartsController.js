@@ -5,7 +5,7 @@ export const getGearParts = async (req, res) => {
   try {
     const gearParts = await prisma.gearPart.findMany({
       where: { id_user: req.user.id_user },
-      orderBy: { id_gear_part: "asc" },
+      orderBy: { id_gear_part: "desc" },
     });
     res.json(gearParts);
   } catch (err) {
