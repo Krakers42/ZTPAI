@@ -3,6 +3,8 @@ import cors from "cors";
 import cookieParser from 'cookie-parser';
 import path from "path";
 import { fileURLToPath } from "url";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./src/swagger.js";
 
 import authRoutes from './src/routes/authenticationRoutes.js';
 import bikeRoutes from "./src/routes/bikeRoutes.js";
@@ -23,6 +25,8 @@ app.use(cors({
   origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
   credentials: true}
 ));
+
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
 app.use(cookieParser());
