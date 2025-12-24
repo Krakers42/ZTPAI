@@ -62,5 +62,6 @@ model Photo {
   id_photo   Int    @id @default(autoincrement())
   id_user    Int
   path       String
+  status   String @default("pending")
   user       User   @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
 }
