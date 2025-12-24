@@ -3,7 +3,7 @@ import amqplib from "amqplib";
 let channel;
 
 export const connectQueue = async () => {
-  const connection = await amqplib.connect("amqp://localhost");
+  const connection = await amqplib.connect("amqp://rabbitmq");
   channel = await connection.createChannel();
   await channel.assertQueue("photoQueue", { durable: true });
   return channel;

@@ -14,12 +14,7 @@ export const getPhotos = async (req, res) => {
       orderBy: { id_photo: "desc" },
     });
 
-    const formatted = photos.map(p => ({
-      ...p,
-      created_at: p.created_at ? new Date(p.created_at).toISOString() : new Date().toISOString(),
-    }));
-
-    res.json(formatted);
+    res.json(photos);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch photos" });
@@ -48,10 +43,7 @@ export const uploadPhoto = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      photo: {
-        ...photo,
-        created_at: new Date(photo.created_at).toISOString(),
-      },
+      photo,
     });
   } catch (err) {
     console.error(err);
