@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { PrismaClient } from "@prisma/client";
+import { sendToQueue } from "../queues/photoQueue.js";
 
 const prisma = new PrismaClient();
 const UPLOAD_DIR = path.join(process.cwd(), "uploads");
@@ -31,6 +32,7 @@ export const uploadPhoto = async (req, res) => {
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
     const filename = `${Date.now()}_${req.file.originalname}`;
+
     if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR);
     fs.writeFileSync(path.join(UPLOAD_DIR, filename), req.file.buffer);
 
@@ -38,16 +40,19 @@ export const uploadPhoto = async (req, res) => {
       data: {
         id_user: userId,
         path: filename,
+        status: "pending",
       },
     });
 
-    const photoWithDate = {
-      ...photo,
-      created_at: photo.created_at ? new Date(photo.created_at).toISOString() : new Date().toISOString(),
-    };
+    await sendToQueue({ id_photo: photo.id_photo, path: filename });
 
-    res.json({ success: true, photo: photoWithDate });
-
+    res.status(201).json({
+      success: true,
+      photo: {
+        ...photo,
+        created_at: new Date(photo.created_at).toISOString(),
+      },
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to upload photo" });
